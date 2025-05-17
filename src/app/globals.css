@@ -12,15 +12,6 @@
     "Liberation Mono", "Courier New", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --primary: #34d399;
-    --primary-dark: #10b981;
-  }
-}
-
 html,
 body {
   padding: 0;
