@@ -15,8 +15,6 @@ import {
   MapPinIcon,
   HeartIcon,
   ChevronDoubleDownIcon,
-  Bars3Icon,
-  XMarkIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -93,45 +91,8 @@ const useIntersectionObserver = () => {
   }, []);
 };
 
-const AnimatedCounter = ({
-  value,
-  suffix = "",
-  prefix = "",
-}: {
-  value: number | string;
-  suffix?: string;
-  prefix?: string;
-}) => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    let start = 0;
-    const end = parseInt(value.toString());
-    const duration = 2000;
-    const increment = end / (duration / 16);
-
-    const timer = setInterval(() => {
-      start += increment;
-      setCount(Math.min(Math.floor(start), end));
-
-      if (start >= end) clearInterval(timer);
-    }, 16);
-
-    return () => clearInterval(timer);
-  }, [value]);
-
-  return (
-    <span className="font-bold">
-      {prefix}
-      {count}
-      {suffix}
-    </span>
-  );
-};
-
 export default function HomePage() {
   useIntersectionObserver();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
@@ -191,21 +152,21 @@ export default function HomePage() {
     {
       title: "1. List Your Groceries",
       description:
-        "Type, scan a recipe, or upload an image of your shopping list.",
+        "Type, scan a recipe, or upload an image to populate your shopping list.",
       icon: ShoppingBagIcon,
       color: "from-emerald-400 to-emerald-600",
     },
     {
-      title: "2. Customize Your Search",
+      title: "2. Smart Optimization Engine",
       description:
-        "Set preferred locations, max store visits, and any dietary filters.",
+        "Generative AI parses your list and applies filters. Then, a custom algorithm compares store prices to build your most cost-effective cart.",
       icon: ShieldCheckIcon,
-      color: "from-teal-400 to-teal-600",
+      color: "from-emerald-400 to-emerald-600",
     },
     {
       title: "3. Uncover Max Savings",
       description:
-        "Receive your optimized shopping plan, detailing stores, prices, and total savings.",
+        "Receive your optimized shopping plan, with stores, prices, and total savings.",
       icon: SparklesIcon,
       color: "from-green-400 to-green-600",
     },
@@ -242,9 +203,11 @@ export default function HomePage() {
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex-shrink-0">
               <div className="flex items-center gap-2 group">
-                <span className="text-2xl transform group-hover:rotate-[20deg] transition-all duration-500 ease-bounce">
-                  🌿
-                </span>
+                <img
+                  src="/logo.png"
+                  alt="SmartCart Logo"
+                  className="w-13 h-13 transform group-hover:rotate-[20deg] transition-all duration-500 ease-bounce"
+                />
                 <span
                   className={`text-2xl md:text-3xl font-extrabold transition-all duration-500 ${
                     scrollPosition > 50
@@ -405,13 +368,65 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500"></div>
+      </section>
+
+      {/* How It Works Section */}
+      <section
+        id="how-it-works"
+        className="py-24 bg-emerald-900 text-white overflow-hidden"
+      >
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center p-3 bg-[#d8f9e6]/30 rounded-full mb-6 animate-on-scroll animate-fade-in-down">
+              <CheckCircleIcon className="w-8 h-8 text-emerald-300" />
+            </div>
+
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-on-scroll animate-fade-in-up">
+              How {APP_NAME} Works Its Magic
+            </h2>
+
+            <p className="text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto animate-on-scroll animate-fade-in-up animation-delay-200">
+              Grocery savings in three simple, powerful steps.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {howItWorksSteps.map((step, index) => (
+              <div
+                key={step.title}
+                className="text-center relative animate-on-scroll animate-fade-in-up"
+                style={{ animationDelay: `${0.3 + index * 0.2}s` }}
+              >
+                <div className="relative mb-8">
+                  {/* Connection line between steps */}
+                  {index < howItWorksSteps.length - 1 && (
+                    <div className="hidden text-xl md:block absolute top-1/3 -right-4 w-8 h-0.5 z-0 text-emerald-700">
+                      {"->"}
+                    </div>
+                  )}
+
+                  <div
+                    className={`bg-gradient-to-br ${step.color} text-white rounded-2xl p-6 w-24 h-24 mx-auto flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 z-10 relative`}
+                  >
+                    <step.icon className="w-12 h-12" />
+                  </div>
+                </div>
+
+                <h3 className="text-2xl font-bold mb-3 text-white">
+                  {step.title}
+                </h3>
+
+                <p className="text-emerald-100 text-lg">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Features Section */}
       <section
         id="features"
-        className="relative py-24 bg-gradient-to-b from-emerald-100 via-emerald-50 to-white overflow-hidden"
+        className="relative py-24 bg-gradient-to-b from-white via-emerald-50 to-emerald-100 overflow-hidden"
       >
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(16_185_129_/_0.04)_1px,_transparent_0)] bg-[length:32px_32px]"></div>
@@ -443,59 +458,6 @@ export default function HomePage() {
                 <p className="text-gray-600 text-center">
                   {feature.description}
                 </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works Section */}
-      <section
-        id="how-it-works"
-        className="py-24 bg-emerald-900 text-white overflow-hidden"
-      >
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center p-3 bg-white/10 rounded-full mb-6 backdrop-blur-sm animate-on-scroll animate-fade-in-down">
-              <CheckCircleIcon className="w-8 h-8 text-emerald-300" />
-            </div>
-
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-on-scroll animate-fade-in-up">
-              How {APP_NAME} Works Its Magic
-            </h2>
-
-            <p className="text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto animate-on-scroll animate-fade-in-up animation-delay-200">
-              Grocery savings in three simple, powerful steps.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {howItWorksSteps.map((step, index) => (
-              <div
-                key={step.title}
-                className="text-center relative animate-on-scroll animate-fade-in-up"
-                style={{ animationDelay: `${0.3 + index * 0.2}s` }}
-              >
-                <div className="relative mb-8">
-                  {/* Connection line between steps */}
-                  {index < howItWorksSteps.length - 1 && (
-                    <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-emerald-700 z-0">
-                      <div className="absolute right-0 -mt-1 w-2 h-2 bg-emerald-500 rounded-full"></div>
-                    </div>
-                  )}
-
-                  <div
-                    className={`bg-gradient-to-br ${step.color} text-white rounded-2xl p-6 w-24 h-24 mx-auto flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 z-10 relative`}
-                  >
-                    <step.icon className="w-12 h-12" />
-                  </div>
-                </div>
-
-                <h3 className="text-2xl font-bold mb-3 text-white">
-                  {step.title}
-                </h3>
-
-                <p className="text-emerald-100 text-lg">{step.description}</p>
               </div>
             ))}
           </div>
