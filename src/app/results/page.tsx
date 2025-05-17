@@ -248,7 +248,7 @@ const CartOptionCard = ({
 
       <div className="mt-6">
         <button
-          className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 px-6 rounded-xl
+          className="w-full cursor-pointer bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 px-6 rounded-xl
                          shadow-lg hover:shadow-emerald-500/30 transition-all duration-500 transform hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-emerald-500/30
                          flex items-center justify-center group"
