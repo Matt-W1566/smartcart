@@ -16,6 +16,7 @@ import {
   HeartIcon,
   ChevronDoubleDownIcon,
   CheckCircleIcon,
+  LinkIcon,
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 
@@ -94,6 +95,59 @@ const useIntersectionObserver = () => {
 export default function HomePage() {
   useIntersectionObserver();
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [cartItems, setCartItems] = useState<{name: string, quantity: number}[]>([]);
+  const [showRecipeInput, setShowRecipeInput] = useState(false);
+  const [recipeURL, setRecipeURL] = useState("");
+  const [filters, setFilters] = useState({
+    halal: false,
+    kosher: false,
+    canadian: false,
+    glutenFree: false,
+    vegetarian: false,
+    vegan: false,
+    dairyFree: false
+  });
+  
+  // Function to add items to cart
+  const addItemToCart = () => {
+    if (searchQuery.trim() === "") return;
+    
+    // Check if item already exists in cart
+    const existingItemIndex = cartItems.findIndex(
+      item => item.name.toLowerCase() === searchQuery.toLowerCase()
+    );
+    
+    if (existingItemIndex >= 0) {
+      // Update quantity if item exists
+      const updatedCart = [...cartItems];
+      updatedCart[existingItemIndex].quantity += 1;
+      setCartItems(updatedCart);
+    } else {
+      // Add new item if it doesn't exist
+      setCartItems([...cartItems, { name: searchQuery, quantity: 1 }]);
+    }
+    
+    // Clear search field after adding
+    setSearchQuery("");
+  };
+  
+  // Function to update item quantity
+  const updateQuantity = (index: number, change: number) => {
+    const updatedCart = [...cartItems];
+    const newQuantity = updatedCart[index].quantity + change;
+    
+    if (newQuantity <= 0) {
+      // Remove item if quantity becomes zero or negative
+      updatedCart.splice(index, 1);
+    } else {
+      // Otherwise update the quantity
+      updatedCart[index].quantity = newQuantity;
+    }
+    
+    setCartItems(updatedCart);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -175,7 +229,225 @@ export default function HomePage() {
   const heroDynamicWords = ["Smarter", "Cheaper", "Greener"];
 
   return (
-    <div>
+    <div className={showPopup ? "overflow-hidden" : ""}>      {/* Popup component */}
+      {showPopup && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setShowPopup(false)}
+          ></div>
+          
+          <div className="flex flex-col md:flex-row gap-4 max-w-[95%] relative z-10">
+            {/* Filters Card */}
+            <div className="bg-white rounded-2xl shadow-2xl p-6 transform transition-all animate-fade-in-up md:w-72">
+              <h3 className="font-semibold text-emerald-800 mb-3 text-lg">Dietary Preferences</h3>
+              <div className="space-y-2">
+                {[
+                  { id: 'halal', label: 'Halal' },
+                  { id: 'kosher', label: 'Kosher' },
+                  { id: 'canadian', label: 'Canadian Products' },
+                  { id: 'glutenFree', label: 'Gluten Free' },
+                  { id: 'vegetarian', label: 'Vegetarian' },
+                  { id: 'vegan', label: 'Vegan' },
+                  { id: 'dairyFree', label: 'Dairy Free' }
+                ].map(filter => (
+                  <div key={filter.id} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={filter.id}                      checked={filters[filter.id as keyof typeof filters]}
+                      onChange={(e) => {
+                        setFilters({
+                          ...filters,
+                          [filter.id]: e.target.checked
+                        });
+                      }}
+                      className="rounded border-gray-300 text-green-500 focus:ring-green-400 h-4 w-4 checked:bg-green-500 accent-green-500"
+                    />
+                    <label htmlFor={filter.id} className="ml-2 text-gray-700">{filter.label}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Main Cart Card */}
+            <div className="relative bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-auto transform transition-all animate-fade-in-up">
+              <button
+                onClick={() => setShowPopup(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+              
+              {/* Popup Title */}
+              <h2 className="text-2xl font-bold text-emerald-900 mb-6 text-center">
+                What's In Your Cart?
+              </h2>
+                
+              {/* Search Bar */}
+              <div className="flex items-center mb-4 relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') addItemToCart();
+                  }}
+                  placeholder="Search grocery items..."
+                  className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                />
+                <button 
+                  onClick={addItemToCart}
+                  className="absolute right-3 text-gray-400 hover:text-emerald-600 transition-colors"
+                >
+                  <MagnifyingGlassIcon className="w-5 h-5" />
+                </button>
+              </div>
+              
+              {/* Upload and Recipe URL buttons */}
+              <div className="flex space-x-4 mb-6">
+                <button 
+                  className="flex-1 bg-emerald-100 text-emerald-800 font-medium py-2 px-4 rounded-lg hover:bg-emerald-200 transition-colors flex items-center justify-center"
+                  onClick={() => {
+                    // In a real implementation, this would open a file picker
+                    alert("Image upload functionality would be implemented here");
+                    // For demo purposes, add some example items
+                    setCartItems([
+                      ...cartItems,
+                      { name: "Tomatoes", quantity: 2 },
+                      { name: "Onions", quantity: 1 },
+                      { name: "Garlic", quantity: 1 }
+                    ]);
+                  }}
+                >
+                  <CameraIcon className="w-5 h-5 mr-2" />
+                  Upload a picture
+                </button>
+                <button 
+                  className="flex-1 bg-emerald-100 text-emerald-800 font-medium py-2 px-4 rounded-lg hover:bg-emerald-200 transition-colors flex items-center justify-center"
+                  onClick={() => setShowRecipeInput(!showRecipeInput)}
+                >
+                  <LinkIcon className="w-5 h-5 mr-2" />
+                  Recipe URL
+                </button>
+              </div>
+              
+              {/* Recipe URL Input */}
+              {showRecipeInput && (
+                <div className="mb-6 animate-fade-in">
+                  <div className="flex items-center relative">
+                    <input
+                      type="text"
+                      value={recipeURL}
+                      onChange={(e) => setRecipeURL(e.target.value)}
+                      placeholder="Paste recipe URL here..."
+                      className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && recipeURL.trim() !== '') {
+                          // Add the recipe URL to cart
+                          const shortened = recipeURL.replace(/^https?:\/\//, '').split('/')[0];
+                          setCartItems([...cartItems, { name: `Recipe: ${shortened}`, quantity: 1 }]);
+                          setRecipeURL('');
+                          setShowRecipeInput(false);
+                        }
+                      }}
+                    />
+                    <button 
+                      onClick={() => {
+                        if (recipeURL.trim() !== '') {
+                          // Add the recipe URL to cart
+                          const shortened = recipeURL.replace(/^https?:\/\//, '').split('/')[0];
+                          setCartItems([...cartItems, { name: `Recipe: ${shortened}`, quantity: 1 }]);
+                          setRecipeURL('');
+                          setShowRecipeInput(false);
+                        }
+                      }}
+                      className="absolute right-3 text-gray-400 hover:text-emerald-600 transition-colors"
+                    >
+                      <ArrowRightIcon className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              
+              {/* Cart Items */}
+              <div className="bg-gray-50 rounded-lg p-4 mb-6 max-h-60 overflow-y-auto">
+                {cartItems.length === 0 ? (
+                  <div className="text-center text-gray-500 italic">
+                    Your cart is empty. Start by searching for items above.
+                  </div>
+                ) : (
+                  cartItems.map((item, index) => (
+                    <div key={index} className="flex items-center justify-between py-2 border-b border-gray-200 last:border-b-0">
+                      <span className="font-medium">{item.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <button 
+                          onClick={() => {
+                            // Remove the item from cart
+                            const updatedCart = [...cartItems];
+                            updatedCart.splice(index, 1);
+                            setCartItems(updatedCart);
+                          }}
+                          className="w-8 h-8 rounded-full bg-red-100 text-red-800 flex items-center justify-center hover:bg-red-200 transition-colors mr-2"
+                          title="Remove item"
+                        >
+                          ×
+                        </button>
+                        <button 
+                          onClick={() => updateQuantity(index, -1)}
+                          className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center hover:bg-emerald-200 transition-colors"
+                        >
+                          -
+                        </button>
+                        <span className="w-8 text-center">{item.quantity}</span>
+                        <button 
+                          onClick={() => updateQuantity(index, 1)}
+                          className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center hover:bg-emerald-200 transition-colors"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+              
+              {/* Calculate Button */}
+              <button
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+                onClick={() => {
+                  if (cartItems.length > 0) {
+                    // Here you would implement the actual calculation logic
+                    // For now, just show a confirmation that would lead to results
+                    alert(`Calculating best prices for ${cartItems.length} items...`);
+                    // In a real implementation, you might route to a results page
+                    // or show a loading state while calculating
+                  } else {
+                    alert("Please add items to your cart first");
+                  }
+                }}
+                disabled={cartItems.length === 0}
+              >
+                <SparklesIcon className="w-5 h-5 mr-2" />
+                CALCULATE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Head>
         <title>{APP_NAME}</title>
         <meta
@@ -277,9 +549,8 @@ export default function HomePage() {
               , helping you save big and eat healthy.
             </p>
 
-            <div className="hidden md:flex items-center">
-              <Link
-                href="/search"
+            <div className="hidden md:flex items-center">              <button
+                onClick={() => setShowPopup(true)}
                 className="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl relative overflow-hidden ml-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-7 px-12 rounded-full shadow-lg
                 hover:shadow-emerald-500/30 transition-all duration-500 transform hover:scale-105 hover:translate-y-[-2px] group btn-shimmer"
               >
@@ -287,7 +558,7 @@ export default function HomePage() {
                   Start Saving
                   <ArrowRightIcon className="w-6 h-6 ml-1.5 transform group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
-              </Link>
+              </button>
             </div>
           </div>
 
