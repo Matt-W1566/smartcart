@@ -457,7 +457,10 @@ export default function HomePage() {
 
               {/* Calculate Button */}
               <button
-                className="w-full cursor-pointer bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 px-6 rounded-xl
+                              shadow-lg hover:shadow-emerald-500/30 transition-all duration-500 transform hover:scale-105
+                              focus:outline-none focus:ring-4 focus:ring-emerald-500/30
+                              flex items-center justify-center group cursor-pointer"
                 onClick={() => {
                   if (cartItems.length > 0) {
                     window.location.href = "/results";
