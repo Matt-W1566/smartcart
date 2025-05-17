@@ -23,7 +23,6 @@ import { StarIcon } from "@heroicons/react/24/solid";
 
 const APP_NAME = "CartSmart";
 
-// Custom typing effect component with improved performance
 interface TypingEffectProps {
   texts: string[];
   className?: string;
@@ -44,12 +43,12 @@ const TypingEffect: React.FC<TypingEffectProps> = ({ texts, className }) => {
         setTypingSpeed(100);
 
         if (displayedText === word) {
-          setTypingSpeed(2000); // Pause at the end of the word
+          setTypingSpeed(2000);
           setIsDeleting(true);
         }
       } else {
         setDisplayedText(word.substring(0, displayedText.length - 1));
-        setTypingSpeed(50);
+        setTypingSpeed(75);
 
         if (displayedText === "") {
           setIsDeleting(false);
@@ -64,7 +63,6 @@ const TypingEffect: React.FC<TypingEffectProps> = ({ texts, className }) => {
   return <span className={className}>{displayedText}</span>;
 };
 
-// Intersection observer hook for animations
 const useIntersectionObserver = () => {
   useEffect(() => {
     interface IntersectionObserverEntryWithTarget
@@ -95,7 +93,6 @@ const useIntersectionObserver = () => {
   }, []);
 };
 
-// Animated counter component
 const AnimatedCounter = ({
   value,
   suffix = "",
@@ -137,7 +134,6 @@ export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  // Handle scroll events
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
@@ -216,27 +212,6 @@ export default function HomePage() {
     },
   ];
 
-  const testimonials = [
-    {
-      text: "CartSmart has saved me over $350 in just three months. It's completely changed how I shop for groceries.",
-      name: "Sarah T.",
-      location: "Toronto",
-      savings: "26%",
-    },
-    {
-      text: "I used to spend hours comparing prices across stores. Now I just input my list and CartSmart does all the work!",
-      name: "Michael L.",
-      location: "Vancouver",
-      savings: "18%",
-    },
-    {
-      text: "As a single parent, every dollar counts. CartSmart helped me cut my grocery bill by nearly a third!",
-      name: "Jessica R.",
-      location: "Montreal",
-      savings: "31%",
-    },
-  ];
-
   const heroDynamicWords = ["Smarter", "Cheaper", "Greener"];
 
   const statsData = [
@@ -244,13 +219,10 @@ export default function HomePage() {
     { value: "125000", suffix: "+", label: "Active Users" },
     { value: "3.2", suffix: "M", label: "Total Saved" },
   ];
-
   return (
-    <>
+    <div>
       <Head>
-        <title>
-          {APP_NAME} | Harvest Savings, Not Bills | Canadian Grocery App
-        </title>
+        <title>{APP_NAME}</title>
         <meta
           name="description"
           content={`Revolutionize your grocery shopping with ${APP_NAME}. Find the absolute cheapest cart across Canadian stores and fight food inflation. Supports UNSDG 2.`}
@@ -264,270 +236,225 @@ export default function HomePage() {
         />
       </Head>
 
-      {/* Navbar - Enhanced with scroll effect */}
+      {/* Navbar */}
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${
+        className={`fixed w-full z-50 transition-all duration-500 ease-in-out ${
           scrollPosition > 50
-            ? "bg-white/90 backdrop-blur-md shadow-md py-3"
-            : "bg-transparent py-5"
+            ? "bg-white/95 backdrop-blur-md shadow-lg py-2"
+            : "bg-transparent py-4"
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex-shrink-0">
-              <div className="flex items-center group">
+              <div className="flex items-center gap-2 group">
+                <span className="text-2xl transform group-hover:rotate-[20deg] transition-all duration-500 ease-bounce">
+                  🌿
+                </span>
                 <span
-                  className={`text-3xl font-extrabold transition-colors ${
-                    scrollPosition > 50 ? "text-emerald-800" : "text-black"
-                  }`}
+                  className={`text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-emerald-600 to-${
+                    scrollPosition > 50 ? "emerald-800" : "emerald-400"
+                  } bg-clip-text text-transparent transition-all duration-500`}
                 >
                   {APP_NAME}
                 </span>
-                <span className="text-2xl ml-1.5 transform group-hover:rotate-[20deg] transition-transform duration-300">
-                  🌿
-                </span>
               </div>
             </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
-              <Link
-                href="#features"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  scrollPosition > 50
-                    ? "text-gray-800 hover:text-emerald-700"
-                    : "text-black/90 hover:text-black"
-                }`}
-              >
-                Features
-              </Link>
-              <Link
-                href="#how-it-works"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  scrollPosition > 50
-                    ? "text-gray-800 hover:text-emerald-700"
-                    : "text-black/90 hover:text-black"
-                }`}
-              >
-                How It Works
-              </Link>
-              <Link
-                href="#testimonials"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  scrollPosition > 50
-                    ? "text-gray-800 hover:text-emerald-700"
-                    : "text-black/90 hover:text-black"
-                }`}
-              >
-                Testimonials
-              </Link>
-              <Link
-                href="#stats"
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  scrollPosition > 50
-                    ? "text-gray-800 hover:text-emerald-700"
-                    : "text-black/90 hover:text-black"
-                }`}
-              >
-                Stats
-              </Link>
+            <div className="hidden md:flex items-center">
               <Link
                 href="/search"
-                className="ml-4 bg-gradient-to-r from-emerald-500 to-green-600 text-black font-semibold py-2.5 px-6 rounded-lg shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 transform hover:scale-105 group"
+                className="relative overflow-hidden ml-4 bg-gradient-to-r from-emerald-500 to-green-600
+          text-white font-semibold py-2 px-5 rounded-full shadow-lg hover:shadow-emerald-500/30
+          transition-all duration-500 transform hover:scale-105 hover:translate-y-[-2px] group btn-shimmer"
               >
-                <span className="flex items-center">
+                <span className="flex items-center relative z-10">
                   Start Saving
-                  <ArrowRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRightIcon className="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </Link>
             </div>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                type="button"
-                className={`inline-flex items-center justify-center p-2 rounded-md ${
-                  scrollPosition > 50
-                    ? "text-gray-800 hover:text-emerald-700"
-                    : "text-black hover:text-black/80"
-                }`}
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                {isMenuOpen ? (
-                  <XMarkIcon className="h-6 w-6" />
-                ) : (
-                  <Bars3Icon className="h-6 w-6" />
-                )}
-              </button>
-            </div>
           </div>
-
-          {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="md:hidden bg-white rounded-b-2xl shadow-xl mt-2 py-3 px-4 space-y-2 transition-all duration-300 animate-fade-in-down">
-              <Link
-                href="#features"
-                className="block px-4 py-2 rounded-md text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Features
-              </Link>
-              <Link
-                href="#how-it-works"
-                className="block px-4 py-2 rounded-md text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                How It Works
-              </Link>
-              <Link
-                href="#testimonials"
-                className="block px-4 py-2 rounded-md text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Testimonials
-              </Link>
-              <Link
-                href="#stats"
-                className="block px-4 py-2 rounded-md text-gray-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Stats
-              </Link>
-              <Link
-                href="/search"
-                className="block mt-4 bg-gradient-to-r from-emerald-500 to-green-600 text-black font-semibold py-2.5 px-6 rounded-lg text-center shadow-md"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Start Saving
-              </Link>
-            </div>
-          )}
         </div>
       </nav>
 
-      {/* Hero Section - Enhanced with modern design and animations */}
-      <header className="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-green-900 text-black min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Abstract background pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIxIi8+PC9nPjwvc3ZnPg==')]"></div>
+      {/* Hero Section */}
+      <header className="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-green-900 min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Enhanced background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(255_255_255_/_0.15)_1px,_transparent_0)] bg-[length:24px_24px]"></div>
         </div>
 
-        {/* Animated background shapes */}
+        {/* Improved animated background shapes */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-500/20 rounded-full filter blur-3xl animate-blob"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-500/15 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
-          <div className="absolute top-3/4 left-1/2 w-80 h-80 bg-teal-500/20 rounded-full filter blur-3xl animate-blob animation-delay-4000"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-full filter blur-3xl animate-blob"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-teal-500/20 to-emerald-500/20 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute top-3/4 left-1/2 w-96 h-96 bg-gradient-to-r from-green-500/20 to-teal-500/20 rounded-full filter blur-3xl animate-blob animation-delay-4000"></div>
         </div>
 
         <div className="container mx-auto px-6 text-center relative z-10 pt-24 pb-12">
-          <div className="relative inline-block mb-6">
-            <div className="relative inline-flex rounded-full bg-white/10 p-3 backdrop-blur-sm mb-6 animate-float shadow-xl">
-              <ShoppingBagIcon className="w-16 h-16 md:w-20 md:h-20 text-emerald-400" />
-              <div className="absolute -top-2 -right-2 bg-white rounded-full p-1.5 shadow-lg">
+          {/* Enhanced icon animation */}
+          <div className="relative inline-block mb-8">
+            <div className="relative inline-flex rounded-full bg-gradient-to-br from-emerald-400/20 to-green-400/10 p-4 backdrop-blur-sm mb-6 animate-float group transform hover:scale-105 transition-all duration-500">
+              <ShoppingBagIcon className="w-16 h-16 md:w-20 md:h-20 text-emerald-400 group-hover:text-emerald-300 transition-colors duration-300" />
+              <div className="absolute -top-2 -right-2 bg-white rounded-full p-2 shadow-xl animate-subtle-pulse">
                 <SparklesIcon className="w-5 h-5 text-emerald-600" />
               </div>
             </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight tracking-tight animate-hero-text-pop">
+          {/* Enhanced text animations */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight tracking-tight animate-hero-text-pop">
             Shop{" "}
-            <span className="relative">
+            <span className="relative inline-block">
               <TypingEffect
                 texts={heroDynamicWords}
-                className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-green-400"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-green-300 to-teal-300 animate-gradient-shift"
               />
-              <span className="absolute -bottom-2 left-0 w-full h-1 bg-emerald-400 rounded opacity-70"></span>
+              <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-green-400 rounded opacity-70"></span>
             </span>
             . <span className="block sm:inline">Not Harder.</span>
           </h1>
 
-          <p className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-emerald-100 font-light opacity-0 animate-hero-text-pop animation-delay-300">
+          <p className="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl mx-auto text-emerald-100/90 font-light leading-relaxed opacity-0 animate-hero-text-pop animation-delay-300">
             {APP_NAME} scours Canadian grocery stores to find you the{" "}
-            <strong className="font-semibold text-black">
+            <strong className="font-semibold text-white relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-emerald-400/50">
               absolute lowest prices
             </strong>
             , helping you save big and eat well.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 opacity-0 animate-fade-in-up animation-delay-600">
+          {/* Enhanced CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 opacity-0 animate-fade-in-up animation-delay-600">
             <Link
               href="/search"
-              className="bg-white text-emerald-900 font-bold py-4 px-8 rounded-xl text-lg shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-500/30 flex items-center group"
+              className="group relative bg-white text-emerald-900 font-bold py-4 px-8 rounded-xl text-lg 
+                       shadow-2xl shadow-emerald-900/20 hover:shadow-emerald-500/30 
+                       transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 
+                       focus:outline-none focus:ring-4 focus:ring-emerald-500/30 
+                       overflow-hidden btn-shimmer"
             >
-              Find My Cheapest Cart
-              <ArrowRightIcon className="w-5 h-5 ml-3 transform group-hover:translate-x-1.5 transition-transform duration-300" />
+              <span className="flex items-center relative z-10">
+                Find My Cheapest Cart
+                <ArrowRightIcon className="w-5 h-5 ml-3 transform group-hover:translate-x-2 transition-transform duration-500" />
+              </span>
             </Link>
 
             <Link
               href="#how-it-works"
-              className="bg-emerald-800/50 backdrop-blur-sm text-black font-semibold py-4 px-8 rounded-xl text-lg hover:bg-emerald-800/80 transition-all duration-300 flex items-center"
+              className="group bg-emerald-800/30 backdrop-blur-sm text-white font-semibold py-4 px-8 
+                       rounded-xl text-lg border border-emerald-700/50
+                       hover:bg-emerald-800/50 hover:border-emerald-600/50 
+                       transition-all duration-300 flex items-center"
             >
               How It Works
-              <ChevronDoubleDownIcon className="w-5 h-5 ml-2" />
+              <ChevronDoubleDownIcon className="w-5 h-5 ml-2 group-hover:translate-y-1 transition-transform duration-300" />
             </Link>
           </div>
 
-          {/* Social proof */}
-          <div className="inline-flex items-center justify-center space-x-2 bg-white/10 backdrop-blur-sm py-3 px-6 rounded-full text-sm text-emerald-100 animate-fade-in animation-delay-800">
-            <div className="flex -space-x-2">
-              <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-black text-xs font-bold">
-                T
-              </div>
-              <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center text-black text-xs font-bold">
-                S
-              </div>
-              <div className="w-8 h-8 rounded-full bg-emerald-700 flex items-center justify-center text-black text-xs font-bold">
-                M
-              </div>
-              <div className="w-8 h-8 rounded-full bg-emerald-800 flex items-center justify-center text-black text-xs font-bold">
-                +
-              </div>
+          {/* Enhanced social proof */}
+          <div
+            className="inline-flex items-center justify-center space-x-4 bg-white/10 backdrop-blur-sm 
+                        py-4 px-8 rounded-2xl text-sm text-emerald-100 animate-fade-in animation-delay-800
+                        border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300"
+          >
+            <div className="flex -space-x-3">
+              {["T", "S", "M", "+"].map((letter, index) => (
+                <div
+                  key={letter}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold
+                            shadow-lg transform hover:scale-110 hover:-translate-y-1 transition-all duration-300
+                            bg-gradient-to-br ${
+                              index === 0
+                                ? "from-emerald-400 to-emerald-600"
+                                : index === 1
+                                ? "from-emerald-500 to-emerald-700"
+                                : index === 2
+                                ? "from-emerald-600 to-emerald-800"
+                                : "from-emerald-700 to-emerald-900"
+                            }`}
+                >
+                  {letter}
+                </div>
+              ))}
             </div>
             <span className="ml-2">
-              Joined by <strong>125,000+</strong> savvy shoppers
+              Joined by{" "}
+              <strong className="text-white bg-emerald-500/20 px-2 py-0.5 rounded-md">
+                125,000+
+              </strong>{" "}
+              savvy shoppers
             </span>
             <div className="flex items-center ml-2">
-              <StarIcon className="w-4 h-4 text-yellow-400" />
-              <StarIcon className="w-4 h-4 text-yellow-400" />
-              <StarIcon className="w-4 h-4 text-yellow-400" />
-              <StarIcon className="w-4 h-4 text-yellow-400" />
-              <StarIcon className="w-4 h-4 text-yellow-400" />
-              <span className="ml-1 font-semibold">4.9</span>
+              {[...Array(5)].map((_, i) => (
+                <StarIcon
+                  key={i}
+                  className="w-4 h-4 text-yellow-400 transform hover:scale-125 transition-transform duration-300"
+                />
+              ))}
+              <span className="ml-2 font-semibold text-white">4.9</span>
             </div>
           </div>
 
-          {/* Scroll indicator */}
+          {/* Enhanced scroll indicator */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in animation-delay-1000">
-            <Link href="#problem" aria-label="Scroll to learn more">
-              <ChevronDoubleDownIcon className="w-8 h-8 text-black/70 hover:text-black animate-bounce" />
+            <Link
+              href="#problem"
+              className="group flex flex-col items-center space-y-2 text-emerald-300/70 
+                       hover:text-white transition-colors duration-300"
+              aria-label="Scroll to learn more"
+            >
+              <span className="text-sm font-medium">Scroll to learn more</span>
+              <ChevronDoubleDownIcon
+                className="w-6 h-6 animate-bounce-slow group-hover:animate-none 
+                                            group-hover:translate-y-1 transition-transform duration-300"
+              />
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Stats Section - New section with impressive numbers */}
+      {/* Stats Section */}
       <section
         id="stats"
-        className="relative py-16 bg-gradient-to-b from-emerald-50 to-white overflow-hidden"
+        className="relative py-24 bg-gradient-to-b from-emerald-50 via-white to-white overflow-hidden"
       >
-        <div className="container mx-auto px-6">
+        {/* Background decoration */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(16_185_129_/_0.05)_1px,_transparent_0)] bg-[length:32px_32px]"></div>
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {statsData.map((stat, index) => (
-                <div
-                  key={index}
-                  className="text-center p-8 rounded-2xl bg-white shadow-xl hover:shadow-emerald-100 border border-emerald-100 transition-all duration-500 transform hover:-translate-y-2 animate-on-scroll animate-fade-in-up"
-                  style={{ animationDelay: `${0.1 + index * 0.2}s` }}
-                >
-                  <div className="text-5xl font-extrabold mb-2 text-emerald-800">
-                    <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                <div key={index} className="relative group">
+                  {/* Card background with gradient border */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-green-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                  <div
+                    className="relative p-8 bg-white rounded-2xl shadow-xl hover:shadow-2xl border border-emerald-100/50 
+                               transition-all duration-500 transform hover:-translate-y-2 animate-on-scroll animate-fade-in-up"
+                    style={{ animationDelay: `${0.1 + index * 0.2}s` }}
+                  >
+                    <div className="relative">
+                      <div className="text-5xl font-extrabold mb-3 bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                        <AnimatedCounter
+                          value={stat.value}
+                          suffix={stat.suffix}
+                        />
+                      </div>
+                      <p className="text-gray-600 font-medium text-lg">
+                        {stat.label}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-gray-600 font-medium">{stat.label}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
+
+        {/* Decorative bottom border */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
       </section>
 
       {/* Problem Statement & UNSDG Link Section */}
@@ -582,7 +509,7 @@ export default function HomePage() {
                   <div
                     className={`w-12 h-12 mx-auto mb-4 rounded-lg bg-gradient-to-br ${item.color} p-3 shadow-lg`}
                   >
-                    <item.icon className="w-full h-full text-black" />
+                    <item.icon className="w-full h-full text-white" />
                   </div>
                   <h3 className="font-bold text-xl text-emerald-900 mb-2">
                     {item.text}
@@ -601,7 +528,7 @@ export default function HomePage() {
       {/* How It Works Section - with staggered animations */}
       <section
         id="how-it-works"
-        className="py-24 bg-emerald-900 text-black overflow-hidden"
+        className="py-24 bg-emerald-900 text-white overflow-hidden"
       >
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
@@ -634,13 +561,13 @@ export default function HomePage() {
                   )}
 
                   <div
-                    className={`bg-gradient-to-br ${step.color} text-black rounded-2xl p-6 w-24 h-24 mx-auto flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 z-10 relative`}
+                    className={`bg-gradient-to-br ${step.color} text-white rounded-2xl p-6 w-24 h-24 mx-auto flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 z-10 relative`}
                   >
                     <step.icon className="w-12 h-12" />
                   </div>
                 </div>
 
-                <h3 className="text-2xl font-bold mb-3 text-black">
+                <h3 className="text-2xl font-bold mb-3 text-white">
                   {step.title}
                 </h3>
 
@@ -661,6 +588,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

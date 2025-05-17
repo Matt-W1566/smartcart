@@ -1,4 +1,3 @@
-@import "tailwindcss/preflight";
 @import "tailwindcss";
 
 :root {
@@ -14,157 +13,151 @@
 
 html,
 body {
-  padding: 0;
-  margin: 0;
   font-family: var(--font-sans);
   scroll-behavior: smooth;
   background-color: var(--background);
   color: var(--foreground);
 }
 
+/* Enhanced link styles */
 a {
   color: inherit;
   text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  transform: translateY(-1px);
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Enhanced focus styles */
 *:focus-visible {
   outline: 2px solid var(--primary);
-  outline-offset: 2px;
+  outline-offset: 4px;
+  border-radius: 0.25rem;
 }
 
+/* Enhanced scroll reveal animation */
 .animate-on-scroll {
   opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+
 .animate-on-scroll.is-visible {
-  /* This will be overridden by specific animation classes like animate-fade-in-up */
-  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Animated Gradient Background for Hero */
+/* Enhanced gradient animations */
 .animated-gradient-bg {
-  background-size: 200% 200%; /* Make it larger for movement */
-  /* The actual gradient will be applied via Tailwind classes */
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
 }
 
-/* Custom scrollbar */
+/* Modern scrollbar styling */
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--primary); /* brand-green-DEFAULT */
   border-radius: 5px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-dark); /* brand-green-dark */
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+  border: 2px solid #f1f1f1;
 }
 
-/* Shimmer effect for buttons */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Enhanced button shimmer effect */
 .btn-shimmer {
   position: relative;
   overflow: hidden;
 }
+
 .btn-shimmer::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -100%; /* Start off-screen */
-  width: 75%; /* Width of the shimmer */
+  left: -100%;
+  width: 75%;
   height: 100%;
   background: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0) 20%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0) 80%
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
   );
-  transform: skewX(-25deg); /* Angle the shimmer */
-}
-.btn-shimmer:hover::before {
-  animation: shimmer 1.5s forwards; /* 'forwards' keeps it at the end state if not infinite */
-  /* Or use animation: shimmer 2s infinite linear; for continuous shimmer */
-}
-
-.btn-shimmer::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    to bottom right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: rotate(45deg);
+  transform: skewX(-20deg);
   animation: shimmer 3s infinite;
 }
 
 @keyframes shimmer {
-  0% {
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
   100% {
-    transform: translate(150%, 150%) rotate(45deg);
+    left: 150%;
   }
 }
 
-/* Animation keyframes */
+/* Enhanced floating animation */
 @keyframes float {
-  0% {
-    transform: translateY(0px);
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
   }
   50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0px);
+    transform: translateY(-20px) rotate(2deg);
   }
 }
 
+/* Enhanced blob animation */
 @keyframes blob {
-  0% {
-    transform: translate(0, 0) scale(1);
+  0%,
+  100% {
+    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
+    transform: translate(0, 0) rotate(0) scale(1);
   }
   33% {
-    transform: translate(30px, -50px) scale(1.1);
+    border-radius: 70% 30% 50% 50%/30% 30% 70% 70%;
+    transform: translate(30px, -50px) rotate(25deg) scale(1.1);
   }
   66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
+    border-radius: 40% 60% 60% 40%/70% 40% 60% 30%;
+    transform: translate(-20px, 20px) rotate(-15deg) scale(0.9);
   }
 }
 
+/* Enhanced bounce animation */
 @keyframes bounce-slow {
   0%,
   100% {
-    transform: translateY(0) rotate(12deg);
+    transform: translateY(0) rotate(0);
   }
   50% {
-    transform: translateY(-20px) rotate(12deg);
+    transform: translateY(-20px) rotate(3deg);
   }
 }
 
-/* Custom animations */
+/* Animation classes */
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
 
 .animate-blob {
-  animation: blob 7s infinite;
+  animation: blob 12s ease-in-out infinite;
 }
 
 .animate-bounce-slow {
-  animation: bounce-slow 3s infinite;
+  animation: bounce-slow 3s ease-in-out infinite;
 }
 
 .animation-delay-2000 {
@@ -175,17 +168,17 @@ a {
   animation-delay: 4s;
 }
 
-/* Card hover effects */
+/* Enhanced card hover effects */
 .hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px) scale(1.02);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* Gradient text effect */
+/* Enhanced gradient text effect */
 .gradient-text {
   background: linear-gradient(
     135deg,
@@ -196,4 +189,13 @@ a {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+/* Smooth transition for all interactive elements */
+button,
+a,
+input,
+select,
+textarea {
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
