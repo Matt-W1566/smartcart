@@ -1,43 +1,201 @@
 @import "tailwindcss";
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  scroll-behavior: smooth;
-  background-color: #f9fafb; /* A very light gray for overall page background */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #10b981;
+  --primary-dark: #059669;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
+html,
+body {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Enhanced link styles */
 a {
   color: inherit;
   text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  transform: translateY(-1px);
 }
 
 * {
   box-sizing: border-box;
 }
 
-/* For animations that only run once when visible */
-.animate-on-scroll {
-  opacity: 0;
-}
-.animate-on-scroll.is-visible {
-  animation: fadeInUp 0.8s ease-out forwards;
+/* Enhanced focus styles */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+  border-radius: 0.25rem;
 }
 
-/* Custom scrollbar (optional, for a more polished look) */
-::-webkit-scrollbar {
-  width: 8px;
+/* Enhanced scroll reveal animation */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced gradient animations */
+.animated-gradient-bg {
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Modern scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+  border-radius: 5px;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #34d399; /* brand-green */
-  border-radius: 4px;
+  background: var(--primary);
+  border-radius: 5px;
+  border: 2px solid #f1f1f1;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #10b981; /* emerald-500 */
+  background: var(--primary-dark);
+}
+
+/* Enhanced button shimmer effect */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 75%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 150%;
+  }
+}
+
+/* Enhanced floating animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+}
+
+/* Enhanced blob animation */
+@keyframes blob {
+  0%,
+  100% {
+    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
+    transform: translate(0, 0) rotate(0) scale(1);
+  }
+  33% {
+    border-radius: 70% 30% 50% 50%/30% 30% 70% 70%;
+    transform: translate(30px, -50px) rotate(25deg) scale(1.1);
+  }
+  66% {
+    border-radius: 40% 60% 60% 40%/70% 40% 60% 30%;
+    transform: translate(-20px, 20px) rotate(-15deg) scale(0.9);
+  }
+}
+
+/* Enhanced bounce animation */
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-20px) rotate(3deg);
+  }
+}
+
+/* Animation classes */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-blob {
+  animation: blob 12s ease-in-out infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Enhanced card hover effects */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced gradient text effect */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Smooth transition for all interactive elements */
+button,
+a,
+input,
+select,
+textarea {
+  transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
