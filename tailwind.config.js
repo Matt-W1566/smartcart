@@ -7,26 +7,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        "brand-green": {
-          lightest: "#ECFDF5", // emerald-50
-          lighter: "#A7F3D0", // emerald-200
-          light: "#6EE7B7", // emerald-300
-          DEFAULT: "#34D399", // emerald-400
-          dark: "#10B981", // emerald-500
-          darker: "#059669", // emerald-600
-          darkest: "#047857", // emerald-700
-          deep: "#065F46", // emerald-800
-          deepest: "#064E3B", // emerald-900
-        },
-        "brand-gray": {
-          lightest: "#F9FAFB", // gray-50
-          light: "#F3F4F6", // gray-100
-          DEFAULT: "#6B7280", // gray-500
-          dark: "#374151", // gray-700
-          darker: "#1F2937", // gray-800
-        },
-      },
+      colors: {},
       animation: {
         "fade-in": "fadeIn 0.6s ease-out forwards",
         "fade-in-up": "fadeInUp 0.8s ease-out forwards",
@@ -34,7 +15,7 @@ module.exports = {
         "fade-in-left": "fadeInLeft 0.8s ease-out forwards",
         "fade-in-right": "fadeInRight 0.8s ease-out forwards",
         "subtle-pulse": "subtlePulse 2.5s infinite ease-in-out",
-        "hero-text-pop":
+        heroTextPop:
           "heroTextPop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards",
         "gradient-shift": "gradientShift 15s ease infinite",
         "slide-up-reveal":

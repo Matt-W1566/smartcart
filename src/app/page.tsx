@@ -147,7 +147,7 @@ export default function HomePage() {
     {
       name: "Smart Cart Builder",
       description:
-        "Intuitively add items to your list. Specific brands or general products – we find the best deals.",
+        "Intuitively add items to your list. Specific brands or general products - we find the best deals.",
       icon: ShoppingBagIcon,
       color: "from-emerald-400 to-emerald-600",
     },
@@ -252,9 +252,11 @@ export default function HomePage() {
                   🌿
                 </span>
                 <span
-                  className={`text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-emerald-600 to-${
-                    scrollPosition > 50 ? "emerald-800" : "emerald-400"
-                  } bg-clip-text text-transparent transition-all duration-500`}
+                  className={`text-2xl md:text-3xl font-extrabold transition-all duration-500 ${
+                    scrollPosition > 50
+                      ? "bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent"
+                      : "text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-green-300 to-teal-300 animate-gradient-shift"
+                  }`}
                 >
                   {APP_NAME}
                 </span>
@@ -263,9 +265,8 @@ export default function HomePage() {
             <div className="hidden md:flex items-center">
               <Link
                 href="/search"
-                className="relative overflow-hidden ml-4 bg-gradient-to-r from-emerald-500 to-green-600
-          text-white font-semibold py-2 px-5 rounded-full shadow-lg hover:shadow-emerald-500/30
-          transition-all duration-500 transform hover:scale-105 hover:translate-y-[-2px] group btn-shimmer"
+                className="relative overflow-hidden ml-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-2 px-5 rounded-full shadow-lg
+                hover:shadow-emerald-500/30 transition-all duration-500 transform hover:scale-105 hover:translate-y-[-2px] group btn-shimmer p-4!"
               >
                 <span className="flex items-center relative z-10">
                   Start Saving
@@ -279,12 +280,10 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <header className="relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-green-900 min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Enhanced background pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(255_255_255_/_0.15)_1px,_transparent_0)] bg-[length:24px_24px]"></div>
         </div>
 
-        {/* Improved animated background shapes */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-full filter blur-3xl animate-blob"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-teal-500/20 to-emerald-500/20 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
@@ -292,7 +291,6 @@ export default function HomePage() {
         </div>
 
         <div className="container mx-auto px-6 text-center relative z-10 pt-24 pb-12">
-          {/* Enhanced icon animation */}
           <div className="relative inline-block mb-8">
             <div className="relative inline-flex rounded-full bg-gradient-to-br from-emerald-400/20 to-green-400/10 p-4 backdrop-blur-sm mb-6 animate-float group transform hover:scale-105 transition-all duration-500">
               <ShoppingBagIcon className="w-16 h-16 md:w-20 md:h-20 text-emerald-400 group-hover:text-emerald-300 transition-colors duration-300" />
@@ -302,8 +300,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Enhanced text animations */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight tracking-tight animate-hero-text-pop">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight tracking-tight animate-hero-text-pop text-white">
             Shop{" "}
             <span className="relative inline-block">
               <TypingEffect
@@ -315,12 +312,12 @@ export default function HomePage() {
             . <span className="block sm:inline">Not Harder.</span>
           </h1>
 
-          <p className="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl mx-auto text-emerald-100/90 font-light leading-relaxed opacity-0 animate-hero-text-pop animation-delay-300">
+          <p className="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl mx-auto text-emerald-100/90 font-light leading-relaxed animate-hero-text-pop animation-delay-1000">
             {APP_NAME} scours Canadian grocery stores to find you the{" "}
             <strong className="font-semibold text-white relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-emerald-400/50">
               absolute lowest prices
             </strong>
-            , helping you save big and eat well.
+            , helping you save big and eat healthy.
           </p>
 
           {/* Enhanced CTA buttons */}
