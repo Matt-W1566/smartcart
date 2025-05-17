@@ -112,39 +112,31 @@ export default function HomePage() {
     dairyFree: false,
   });
 
-  // Function to add items to cart
   const addItemToCart = () => {
     if (searchQuery.trim() === "") return;
 
-    // Check if item already exists in cart
     const existingItemIndex = cartItems.findIndex(
       (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
     );
 
     if (existingItemIndex >= 0) {
-      // Update quantity if item exists
       const updatedCart = [...cartItems];
       updatedCart[existingItemIndex].quantity += 1;
       setCartItems(updatedCart);
     } else {
-      // Add new item if it doesn't exist
       setCartItems([...cartItems, { name: searchQuery, quantity: 1 }]);
     }
 
-    // Clear search field after adding
     setSearchQuery("");
   };
 
-  // Function to update item quantity
   const updateQuantity = (index: number, change: number) => {
     const updatedCart = [...cartItems];
     const newQuantity = updatedCart[index].quantity + change;
 
     if (newQuantity <= 0) {
-      // Remove item if quantity becomes zero or negative
       updatedCart.splice(index, 1);
     } else {
-      // Otherwise update the quantity
       updatedCart[index].quantity = newQuantity;
     }
 
