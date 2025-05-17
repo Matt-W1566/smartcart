@@ -21,7 +21,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 
-const APP_NAME = "CartSmart";
+const APP_NAME = "SmartCart";
 
 interface TypingEffectProps {
   texts: string[];
@@ -269,8 +269,7 @@ export default function HomePage() {
                 hover:shadow-emerald-500/30 transition-all duration-500 transform hover:scale-105 hover:translate-y-[-2px] group btn-shimmer p-4!"
               >
                 <span className="flex items-center relative z-10">
-                  Start Saving
-                  <ArrowRightIcon className="w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform duration-300" />
+                  <MagnifyingGlassIcon className="w-6 h-6 transform group-hover:scale-125 transition-transform duration-300" />
                 </span>
               </Link>
             </div>
@@ -300,115 +299,104 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight tracking-tight animate-hero-text-pop text-white">
-            Shop{" "}
-            <span className="relative inline-block">
-              <TypingEffect
-                texts={heroDynamicWords}
-                className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-green-300 to-teal-300 animate-gradient-shift"
-              />
-              <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-green-400 rounded opacity-70"></span>
-            </span>
-            . <span className="block sm:inline">Not Harder.</span>
-          </h1>
-
-          <p className="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl mx-auto text-emerald-100/90 font-light leading-relaxed animate-hero-text-pop animation-delay-1000">
-            {APP_NAME} scours Canadian grocery stores to find you the{" "}
-            <strong className="font-semibold text-white relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-emerald-400/50">
-              absolute lowest prices
-            </strong>
-            , helping you save big and eat healthy.
-          </p>
-
-          {/* Enhanced CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 opacity-0 animate-fade-in-up animation-delay-600">
-            <Link
-              href="/search"
-              className="group relative bg-white text-emerald-900 font-bold py-4 px-8 rounded-xl text-lg 
-                       shadow-2xl shadow-emerald-900/20 hover:shadow-emerald-500/30 
-                       transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 
-                       focus:outline-none focus:ring-4 focus:ring-emerald-500/30 
-                       overflow-hidden btn-shimmer"
-            >
-              <span className="flex items-center relative z-10">
-                Find My Cheapest Cart
-                <ArrowRightIcon className="w-5 h-5 ml-3 transform group-hover:translate-x-2 transition-transform duration-500" />
-              </span>
-            </Link>
-
-            <Link
-              href="#how-it-works"
-              className="group bg-emerald-800/30 backdrop-blur-sm text-white font-semibold py-4 px-8 
-                       rounded-xl text-lg border border-emerald-700/50
-                       hover:bg-emerald-800/50 hover:border-emerald-600/50 
-                       transition-all duration-300 flex items-center"
-            >
-              How It Works
-              <ChevronDoubleDownIcon className="w-5 h-5 ml-2 group-hover:translate-y-1 transition-transform duration-300" />
-            </Link>
-          </div>
-
-          {/* Enhanced social proof */}
-          <div
-            className="inline-flex items-center justify-center space-x-4 bg-white/10 backdrop-blur-sm 
-                        py-4 px-8 rounded-2xl text-sm text-emerald-100 animate-fade-in animation-delay-800
-                        border border-white/20 shadow-xl hover:bg-white/15 transition-all duration-300"
-          >
-            <div className="flex -space-x-3">
-              {["T", "S", "M", "+"].map((letter, index) => (
-                <div
-                  key={letter}
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold
-                            shadow-lg transform hover:scale-110 hover:-translate-y-1 transition-all duration-300
-                            bg-gradient-to-br ${
-                              index === 0
-                                ? "from-emerald-400 to-emerald-600"
-                                : index === 1
-                                ? "from-emerald-500 to-emerald-700"
-                                : index === 2
-                                ? "from-emerald-600 to-emerald-800"
-                                : "from-emerald-700 to-emerald-900"
-                            }`}
-                >
-                  {letter}
-                </div>
-              ))}
-            </div>
-            <span className="ml-2">
-              Joined by{" "}
-              <strong className="text-white bg-emerald-500/20 px-2 py-0.5 rounded-md">
-                125,000+
-              </strong>{" "}
-              savvy shoppers
-            </span>
-            <div className="flex items-center ml-2">
-              {[...Array(5)].map((_, i) => (
-                <StarIcon
-                  key={i}
-                  className="w-4 h-4 text-yellow-400 transform hover:scale-125 transition-transform duration-300"
+          <div className="flex items-center justify-center mb-4 flex-col gap-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight tracking-tight animate-hero-text-pop text-white">
+              Shop{" "}
+              <span className="relative inline-block">
+                <TypingEffect
+                  texts={heroDynamicWords}
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-green-300 to-teal-300 animate-gradient-shift"
                 />
-              ))}
-              <span className="ml-2 font-semibold text-white">4.9</span>
+                <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-green-400 rounded opacity-70"></span>
+              </span>
+              . <span className="block sm:inline">Not Harder.</span>
+            </h1>
+
+            <p className="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl mx-auto text-emerald-100/90 font-light leading-relaxed animate-heroTextPop animation-delay-1000">
+              {APP_NAME} scours Canadian grocery stores to find you the{" "}
+              <strong className="font-semibold text-white relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-emerald-400/50">
+                absolute lowest prices
+              </strong>
+              , helping you save big and eat healthy.
+            </p>
+
+            <div className="hidden md:flex items-center">
+              <Link
+                href="/search"
+                className="text-lg md:text-xl lg:text-2xl mb-12 max-w-3xl relative overflow-hidden ml-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-7 px-12 rounded-full shadow-lg
+                hover:shadow-emerald-500/30 transition-all duration-500 transform hover:scale-105 hover:translate-y-[-2px] group btn-shimmer"
+              >
+                <span className="flex items-center relative z-10">
+                  Start Saving
+                  <ArrowRightIcon className="w-6 h-6 ml-1.5 transform group-hover:translate-x-1 transition-transform duration-300" />
+                </span>
+              </Link>
             </div>
           </div>
 
-          {/* Enhanced scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in animation-delay-1000">
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 translate-y-5 -translate-x-1/2 animate-fade-in animation-delay-1000">
             <Link
-              href="#problem"
-              className="group flex flex-col items-center space-y-2 text-emerald-300/70 
-                       hover:text-white transition-colors duration-300"
+              href="#features"
+              className="group flex flex-col items-center space-y-2 transition-colors duration-300"
               aria-label="Scroll to learn more"
             >
-              <span className="text-sm font-medium">Scroll to learn more</span>
-              <ChevronDoubleDownIcon
-                className="w-6 h-6 animate-bounce-slow group-hover:animate-none 
-                                            group-hover:translate-y-1 transition-transform duration-300"
-              />
+              <span className="text-sm font-medium text-white">
+                Scroll to learn more
+              </span>
+              <ChevronDoubleDownIcon className="w-6 h-6 text-white group-hover:animate-none group-hover:translate-y-1 transition-transform duration-300" />
             </Link>
           </div>
         </div>
       </header>
+
+      {/* Features Section */}
+      <section
+        id="features"
+        className="relative py-24 bg-gradient-to-b from-white via-emerald-50 to-emerald-100 overflow-hidden"
+      >
+        {/* Decorative background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(16_185_129_/_0.04)_1px,_transparent_0)] bg-[length:32px_32px]"></div>
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-full mb-6 animate-on-scroll animate-fade-in-down">
+              <StarIcon className="w-8 h-8 text-emerald-600" />
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-emerald-900 mb-6 animate-on-scroll animate-fade-in-up">
+              Why Choose {APP_NAME}?
+            </h2>
+            <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto animate-on-scroll animate-fade-in-up animation-delay-200">
+              Discover the features that make {APP_NAME} your ultimate grocery
+              savings companion.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {features.map((feature, idx) => (
+              <div
+                key={feature.name}
+                className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-emerald-200 border border-emerald-100 transition-all duration-300 transform hover:-translate-y-2 animate-on-scroll animate-fade-in-up"
+                style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
+              >
+                <div
+                  className={`w-14 h-14 mb-6 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg mx-auto`}
+                >
+                  <feature.icon className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="font-bold text-xl text-emerald-900 mb-2 text-center">
+                  {feature.name}
+                </h3>
+                <p className="text-gray-600 text-center">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Decorative bottom border */}
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500"></div>
+      </section>
 
       {/* Stats Section */}
       <section
