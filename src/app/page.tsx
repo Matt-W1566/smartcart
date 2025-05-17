@@ -145,13 +145,6 @@ export default function HomePage() {
 
   const features = [
     {
-      name: "Smart Cart Builder",
-      description:
-        "Intuitively add items to your list. Specific brands or general products - we find the best deals.",
-      icon: ShoppingBagIcon,
-      color: "from-emerald-400 to-emerald-600",
-    },
-    {
       name: "Multi-Store Optimizer",
       description:
         "You decide the number of stops. We map out the most cost-effective routes.",
@@ -173,16 +166,22 @@ export default function HomePage() {
       color: "from-lime-400 to-lime-600",
     },
     {
-      name: "Savings & Impact Meter",
+      name: "Dietary Filters",
+      description: "Tailor your grocery search to match dietary needs.",
+      icon: ShieldCheckIcon,
+      color: "from-emerald-400 to-emerald-600",
+    },
+    {
+      name: "UNSDG 2 Impact",
       description:
-        "Track your savings and see how you contribute to UNSDG 2 by reducing food costs.",
-      icon: CurrencyDollarIcon,
+        "Your savings helps advance United Nations Sustainable Development Goal 2: Zero Hunger",
+      icon: HeartIcon,
       color: "from-cyan-400 to-cyan-600",
     },
     {
       name: "Give Back Your Savings",
       description:
-        "Optionally, donate a portion of your saved money to charities tackling food insecurity.",
+        "Optionally, donate a portion of your saved money to a meaningful charity.",
       icon: GiftIcon,
       color: "from-green-400 to-green-600",
     },
@@ -214,11 +213,6 @@ export default function HomePage() {
 
   const heroDynamicWords = ["Smarter", "Cheaper", "Greener"];
 
-  const statsData = [
-    { value: "32", suffix: "%", label: "Average Savings" },
-    { value: "125000", suffix: "+", label: "Active Users" },
-    { value: "3.2", suffix: "M", label: "Total Saved" },
-  ];
   return (
     <div>
       <Head>
@@ -350,99 +344,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Features Section */}
-      <section
-        id="features"
-        className="relative py-24 bg-gradient-to-b from-white via-emerald-50 to-emerald-100 overflow-hidden"
-      >
-        {/* Decorative background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(16_185_129_/_0.04)_1px,_transparent_0)] bg-[length:32px_32px]"></div>
-        </div>
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-full mb-6 animate-on-scroll animate-fade-in-down">
-              <StarIcon className="w-8 h-8 text-emerald-600" />
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-emerald-900 mb-6 animate-on-scroll animate-fade-in-up">
-              Why Choose {APP_NAME}?
-            </h2>
-            <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto animate-on-scroll animate-fade-in-up animation-delay-200">
-              Discover the features that make {APP_NAME} your ultimate grocery
-              savings companion.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {features.map((feature, idx) => (
-              <div
-                key={feature.name}
-                className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-emerald-200 border border-emerald-100 transition-all duration-300 transform hover:-translate-y-2 animate-on-scroll animate-fade-in-up"
-                style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
-              >
-                <div
-                  className={`w-14 h-14 mb-6 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg mx-auto`}
-                >
-                  <feature.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="font-bold text-xl text-emerald-900 mb-2 text-center">
-                  {feature.name}
-                </h3>
-                <p className="text-gray-600 text-center">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Decorative bottom border */}
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500"></div>
-      </section>
-
-      {/* Stats Section */}
-      <section
-        id="stats"
-        className="relative py-24 bg-gradient-to-b from-emerald-50 via-white to-white overflow-hidden"
-      >
-        {/* Background decoration */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(16_185_129_/_0.05)_1px,_transparent_0)] bg-[length:32px_32px]"></div>
-        </div>
-
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {statsData.map((stat, index) => (
-                <div key={index} className="relative group">
-                  {/* Card background with gradient border */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-600 to-green-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-                  <div
-                    className="relative p-8 bg-white rounded-2xl shadow-xl hover:shadow-2xl border border-emerald-100/50 
-                               transition-all duration-500 transform hover:-translate-y-2 animate-on-scroll animate-fade-in-up"
-                    style={{ animationDelay: `${0.1 + index * 0.2}s` }}
-                  >
-                    <div className="relative">
-                      <div className="text-5xl font-extrabold mb-3 bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
-                        <AnimatedCounter
-                          value={stat.value}
-                          suffix={stat.suffix}
-                        />
-                      </div>
-                      <p className="text-gray-600 font-medium text-lg">
-                        {stat.label}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative bottom border */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
-      </section>
-
-      {/* Problem Statement & UNSDG Link Section */}
+      {/* Problem Statement */}
       <section id="problem" className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-50 via-white to-emerald-50 opacity-50"></div>
         <div className="container mx-auto px-6 relative z-10">
@@ -456,13 +358,11 @@ export default function HomePage() {
             </h2>
 
             <p className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-12 animate-on-scroll animate-fade-in-up animation-delay-200">
-              Canadian families face soaring food costs and a monopolized
-              market. {APP_NAME} gives you the power back, finding true savings
-              store by store. We're dedicated to making food more affordable,
-              aligning with{" "}
-              <strong className="text-emerald-700">
-                UNSDG 2: End World Hunger
-              </strong>
+              Groceries are getting more expensive, and it can feel impossible
+              to keep up. SmartCart helps you shop smarter, save money, and
+              stress less. We believe everyone deserves affordable food, and
+              together we're helping make that a reality, supporting <br />
+              <strong className="text-emerald-700">UNSDG 2: Zero Hunger</strong>
               .
             </p>
 
@@ -505,12 +405,51 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
-        {/* Decorative elements */}
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500"></div>
       </section>
 
-      {/* How It Works Section - with staggered animations */}
+      {/* Features Section */}
+      <section
+        id="features"
+        className="relative py-24 bg-gradient-to-b from-emerald-100 via-emerald-50 to-white overflow-hidden"
+      >
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgb(16_185_129_/_0.04)_1px,_transparent_0)] bg-[length:32px_32px]"></div>
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-full mb-6 animate-on-scroll animate-fade-in-down">
+              <StarIcon className="w-8 h-8 text-emerald-600" />
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-emerald-900 mb-6 animate-on-scroll animate-fade-in-up">
+              Why Choose {APP_NAME}?
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {features.map((feature, idx) => (
+              <div
+                key={feature.name}
+                className="p-6 bg-white rounded-xl shadow-lg hover:shadow-xl border border-emerald-100 transition-all duration-300 transform hover:-translate-y-2"
+                style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
+              >
+                <div
+                  className={`w-14 h-14 mb-6 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center shadow-lg mx-auto`}
+                >
+                  <feature.icon className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="font-bold text-xl text-emerald-900 mb-2 text-center">
+                  {feature.name}
+                </h3>
+                <p className="text-gray-600 text-center">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
       <section
         id="how-it-works"
         className="py-24 bg-emerald-900 text-white overflow-hidden"
@@ -559,17 +498,6 @@ export default function HomePage() {
                 <p className="text-emerald-100 text-lg">{step.description}</p>
               </div>
             ))}
-          </div>
-
-          {/* Action button */}
-          <div className="text-center mt-16">
-            <Link
-              href="/search"
-              className="inline-flex items-center bg-white text-emerald-900 font-bold py-3 px-8 rounded-xl hover:bg-emerald-100 transition-colors duration-300 shadow-lg animate-on-scroll animate-fade-in-up animation-delay-800"
-            >
-              Try It Now
-              <ArrowRightIcon className="w-5 h-5 ml-2" />
-            </Link>
           </div>
         </div>
       </section>
