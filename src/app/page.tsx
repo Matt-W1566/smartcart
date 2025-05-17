@@ -460,13 +460,7 @@ export default function HomePage() {
                 className="w-full cursor-pointer bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center"
                 onClick={() => {
                   if (cartItems.length > 0) {
-                    // Here you would implement the actual calculation logic
-                    // For now, just show a confirmation that would lead to results
-                    alert(
-                      `Calculating best prices for ${cartItems.length} items...`
-                    );
-                    // In a real implementation, you might route to a results page
-                    // or show a loading state while calculating
+                    window.location.href = "/results";
                   } else {
                     alert("Please add items to your cart first");
                   }
