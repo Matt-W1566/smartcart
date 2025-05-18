@@ -1,0 +1,370 @@
+{
+  "cheese": {
+    "loblaws": {
+      "Kraft Shredded Cheese": {
+        "price": 7.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "no frills": {
+      "Kraft Shredded Cheese": {
+        "price": 6.99,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "sobeys": {
+      "Armstrong Cheese Slices": {
+        "price": 8.49,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "freshco": {
+      "Armstrong Cheese Slices": {
+        "price": 7.99,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "metro": {
+      "Black Diamond Cheese Blocks": {
+        "price": 9.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "food basics": {
+      "Black Diamond Cheese Blocks": {
+        "price": 8.99,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "walmart": {
+      "Cracker Barrel Cheese": {
+        "price": 7.49,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "longos": {
+      "Parmesan Cheese": {
+        "price": 10.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "farm boy": {
+      "Farm Boy Cheese": {
+        "price": 9.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    }
+  },
+  "bread": {
+    "loblaws": {
+      "Wonder Bread": {
+        "price": 3.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "no frills": {
+      "Wonder Bread": {
+        "price": 3.49,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "sobeys": {
+      "D'Italiano Bread": {
+        "price": 4.49,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "freshco": {
+      "D'Italiano Bread": {
+        "price": 3.99,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "metro": {
+      "Country Harvest Bread": {
+        "price": 4.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "food basics": {
+      "Country Harvest Bread": {
+        "price": 4.29,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "walmart": {
+      "Nature's Own Bread": {
+        "price": 3.79,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "longos": {
+      "Longos Bakery Bread": {
+        "price": 5.49,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    },
+    "farm boy": {
+      "Farm Boy Bread": {
+        "price": 6.49,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": false
+      }
+    }
+  },
+  "butter": {
+    "loblaws": {
+      "Lurpak Butter": {
+        "price": 6.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "no frills": {
+      "Lurpak Butter": {
+        "price": 6.49,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "sobeys": {
+      "President's Choice Butter": {
+        "price": 7.49,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "freshco": {
+      "President's Choice Butter": {
+        "price": 6.99,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "metro": {
+      "Land O'Lakes Butter": {
+        "price": 8.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "food basics": {
+      "Land O'Lakes Butter": {
+        "price": 7.99,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "walmart": {
+      "Great Value Butter": {
+        "price": 5.99,
+        "is_canadian": false,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "longos": {
+      "Longos Butter": {
+        "price": 8.49,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "farm boy": {
+      "Farm Boy Butter": {
+        "price": 7.99,
+        "is_canadian": true,
+        "is_vegan": false,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    }
+  },
+  "ketchup": {
+    "loblaws": {
+      "President's Choice Ketchup": {
+        "price": 4.99,
+        "is_canadian": true,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "no frills": {
+      "President's Choice Ketchup": {
+        "price": 4.49,
+        "is_canadian": false,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "sobeys": {
+      "Heinz Ketchup": {
+        "price": 5.49,
+        "is_canadian": true,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "freshco": {
+      "Heinz Ketchup": {
+        "price": 4.99,
+        "is_canadian": false,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "metro": {
+      "French's Ketchup": {
+        "price": 5.99,
+        "is_canadian": true,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "food basics": {
+      "French's Ketchup": {
+        "price": 5.49,
+        "is_canadian": false,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "walmart": {
+      "Heinz Ketchup": {
+        "price": 3.99,
+        "is_canadian": false,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "longos": {
+      "Longos Ketchup": {
+        "price": 6.49,
+        "is_canadian": true,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    },
+    "farm boy": {
+      "Farm Boy Ketchup": {
+        "price": 5.99,
+        "is_canadian": true,
+        "is_vegan": true,
+        "is_vegetarian": true,
+        "is_halal": true,
+        "gluten_free": true
+      }
+    }
+  }
+}
