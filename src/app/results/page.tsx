@@ -171,16 +171,17 @@ const ResultsPage = () => {
                         : "opacity-70 hover:opacity-100"
                     }`}
                 >
-                  {/*   p-8 max-w-lg w-full mx-auto transform transition-all animate-fade-in-up */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-r  from-emerald-600 to-green-600 rounded-2xl blur opacity-20 group-hover:opacity-100 transition duration-500"></div>
+                  <div className="absolute inline-flex items-center justify-center p-3 bg-[#d8f9e6] rounded-full mb-6 animate-on-scroll animate-fade-in-down"></div>
                   <div className="relative p-6 bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500">
                     <div className="text-center mb-6">
-                      <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-full mb-4">
-                        {option.numberOfStores === 1 ? (
-                          <BuildingStorefrontIcon className="w-8 h-8 text-emerald-600" />
-                        ) : (
-                          <MapPinIcon className="w-8 h-8 text-emerald-600" />
-                        )}
+                      {" "}
+                      <div className="inline-flex items-center justify-center gap-1 p-3 bg-emerald-100 rounded-full mb-4">
+                        {[...Array(option.numberOfStores)].map((_, i) => (
+                          <BuildingStorefrontIcon
+                            key={i}
+                            className="w-6 h-6 text-emerald-600"
+                          />
+                        ))}
                       </div>
                       <h3 className="text-2xl font-bold text-emerald-900 mb-2">
                         {option.numberOfStores} Store
@@ -230,7 +231,6 @@ const ResultsPage = () => {
                   <h2 className="text-2xl font-bold text-emerald-900 mb-6">
                     Your Shopping Plan
                   </h2>
-
                   {/* Store List */}
                   {cartOptions[selectedOption].stores.map((store, index) => (
                     <div key={index} className="mb-8 last:mb-0">
@@ -259,44 +259,98 @@ const ResultsPage = () => {
                         ))}
                       </div>
                     </div>
-                  ))}
-
+                  ))}{" "}
                   {/* Donation Section */}
-                  <div className="mt-8 p-6 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl">
-                    <h3 className="text-xl font-semibold text-emerald-900 mb-4 flex items-center">
-                      <HeartIcon className="w-6 h-6 mr-2 text-emerald-600" />
-                      Make a Difference
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      Consider donating a portion of your savings to help fight
-                      food insecurity.
-                    </p>
-                    <div className="flex items-center space-x-4">
-                      <input
-                        type="range"
-                        min="1"
-                        max="100"
-                        value={donationPercentage}
-                        onChange={(e) =>
-                          setDonationPercentage(parseInt(e.target.value))
-                        }
-                        className="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer"
-                      />
-                      <span className="text-emerald-700 font-semibold w-20">
-                        {donationPercentage}%
-                      </span>
+                  <div className="mt-12 overflow-hidden">
+                    <div className="bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 rounded-2xl p-8 border border-emerald-100 shadow-lg relative">
+                      {/* Decorative background elements */}
+                      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-200/20 to-green-200/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                      <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-teal-200/20 to-emerald-200/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+                      {/* Header */}
+                      <div className="relative flex items-center justify-between mb-8">
+                        <div className="flex items-center">
+                          <div className="bg-white/80 backdrop-blur-sm p-3 rounded-xl shadow-sm mr-4">
+                            <HeartIcon className="w-8 h-8 text-emerald-600 animate-pulse" />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-bold text-emerald-900">
+                              Make a Difference
+                            </h3>
+                            <p className="text-emerald-600">
+                              Support Your Community
+                            </p>
+                          </div>
+                        </div>
+                        <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+                          <span className="text-2xl font-bold text-emerald-700">
+                            {donationPercentage}%
+                          </span>
+                        </div>
+                      </div>
+                      {/* Description */}
+                      <p className="text-emerald-800 text-lg mb-8 relative">
+                        Help fight food insecurity by donating a portion of your
+                        savings to local food banks.
+                      </p>
+                      {/* Slider Section */}
+                      <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-sm mb-8">
+                        {" "}
+                        <div className="mb-4">
+                          <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            value={donationPercentage}
+                            onChange={(e) =>
+                              setDonationPercentage(parseInt(e.target.value))
+                            }
+                            className="w-full h-3 appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-600 [&::-webkit-slider-thumb]:cursor-pointer hover:[&::-webkit-slider-thumb]:bg-emerald-700"
+                            style={{
+                              background: `linear-gradient(to right, #059669 0%, #059669 ${donationPercentage}%, #A7F3D0 ${donationPercentage}%, #A7F3D0 100%)`,
+                              borderRadius: "9999px",
+                            }}
+                          />
+                        </div>
+                        <div className="flex justify-between text-sm text-emerald-600 font-medium">
+                          <span>1%</span>
+                          <span>25%</span>
+                          <span>50%</span>
+                          <span>75%</span>
+                          <span>100%</span>
+                        </div>
+                      </div>{" "}
+                      {/* Amount Display */}
+                      <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-sm mb-8 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                        <div className="relative flex justify-between items-center">
+                          <span className="text-emerald-700 font-medium">
+                            Your Contribution:
+                          </span>
+                          <div className="flex items-baseline">
+                            <span className="text-3xl font-bold text-emerald-700">
+                              $
+                            </span>
+                            <span className="text-4xl font-bold text-emerald-700">
+                              {(
+                                (cartOptions[selectedOption].totalSavings *
+                                  donationPercentage) /
+                                100
+                              ).toFixed(2)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>{" "}
+                      {/* Action Button */}
+                      <button
+                        onClick={() => setShowDonationModal(true)}
+                        className="w-full cursor-pointer mt-4 font-semibold py-3 px-6 rounded-xl
+                        transition-all duration-500 flex items-center justify-center group
+                        bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg transform hover:scale-x-102 hover:scale-y-105"
+                      >
+                        <span>Donate Now</span>
+                        <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </button>
                     </div>
-                    <button
-                      onClick={() => setShowDonationModal(true)}
-                      className="mt-4 w-full bg-emerald-600 cursor-pointer hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
-                    >
-                      Donate $
-                      {(
-                        (cartOptions[selectedOption].totalSavings *
-                          donationPercentage) /
-                        100
-                      ).toFixed(2)}
-                    </button>
                   </div>
                 </div>
               </div>

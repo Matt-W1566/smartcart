@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CartSmart | Smart Shopping for Smart Savings",
+  title: "SmartCart | Shop Smarter, Not harder.",
   description:
     "Shop smarter, save more with CartSmart. Find the best grocery deals across Canadian stores.",
 };
