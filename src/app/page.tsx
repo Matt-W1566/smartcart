@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Head from "next/head";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Head from "next/head";
 import {
   ShoppingBagIcon,
   MagnifyingGlassIcon,
@@ -100,20 +100,45 @@ export default function HomePage() {
   const [cartItems, setCartItems] = useState<
     { name: string; quantity: number }[]
   >([]);
-  const [showRecipeInput, setShowRecipeInput] = useState(false);
   const [recipeURL, setRecipeURL] = useState("");
   const [isProcessingImage, setIsProcessingImage] = useState(false);
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const [filters, setFilters] = useState({
+  const fileInputRef = React.useRef<HTMLInputElement>(null);  const [filters, setFilters] = useState({
     canadian: false,
-    vegetarian: false,
-    glutenFree: false,
-    kosher: false,
-    halal: false,
     vegan: false,
+    vegetarian: false,
+    halal: false,
+    kosher: false,
+    glutenFree: false,
     dairyFree: false,
   });
-
+  
+  // Persist cartItems to localStorage whenever it changes
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      window.localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    } else {
+      window.localStorage.removeItem("cartItems");
+    }
+  }, [cartItems]);
+  
+  // Persist filters (dietary preferences) to localStorage whenever they change
+  useEffect(() => {
+    window.localStorage.setItem("dietaryPreferences", JSON.stringify(filters));
+  }, [filters]);
+  
+  // Load saved filters from localStorage on component mount
+  useEffect(() => {
+    const savedFilters = window.localStorage.getItem("dietaryPreferences");
+    if (savedFilters) {
+      try {
+        setFilters(JSON.parse(savedFilters));
+      } catch (e) {
+        // If parsing fails, keep the default filters
+      }
+    }
+  }, []);
+  
+  const [showRecipeInput, setShowRecipeInput] = useState(false);
   const addItemToCart = () => {
     if (searchQuery.trim() === "") return;
 
@@ -255,7 +280,7 @@ export default function HomePage() {
                     <input
                       type="checkbox"
                       id={filter.id}
-                      checked={filters[filter.id as keyof typeof filters]}
+                      checked={!!filters[filter.id as keyof typeof filters]}
                       onChange={(e) => {
                         setFilters({
                           ...filters,
@@ -303,8 +328,8 @@ export default function HomePage() {
               <div className="flex items-center mb-4 relative">
                 <input
                   type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  value={typeof searchQuery === "string" ? searchQuery : ""}
+                  onChange={(e) => setSearchQuery(e.target.value ?? "")}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") addItemToCart();
                   }}
@@ -333,22 +358,51 @@ export default function HomePage() {
 
                     setIsProcessingImage(true);
                     try {
-                      const { processImage } = await import(
-                        "@/app/utils/imageProcessing"
-                      );
-                      const items = await processImage(file);
-
-                      // Add each recognized item to the cart
-                      const newItems = items.map((name) => ({
-                        name: name.charAt(0).toUpperCase() + name.slice(1),
-                        quantity: 1,
-                      }));
-
-                      setCartItems((prev) => [...prev, ...newItems]);
+                      // Read file as base64
+                      const reader = new FileReader();
+                      reader.onload = async (event) => {
+                        const base64 = event.target?.result?.toString().split(",")[1];
+                        if (!base64) {
+                          alert("Failed to read image file.");
+                          setIsProcessingImage(false);
+                          return;
+                        }
+                        // Call the API route
+                        const res = await fetch("/api/photo-parse", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ imageBase64: base64 })
+                        });
+                        if (!res.ok) {
+                          alert("Failed to parse image. Try again.");
+                          setIsProcessingImage(false);
+                          return;
+                        }
+                        const data = await res.json();
+                        // Expecting data.items to be a comma-separated string
+                        let itemsString = data.items || "";
+                        const items: string[] = itemsString
+                          .split(",")
+                          .map((s: string) => s.trim())
+                          .filter((s: string) => s.length > 0);
+                        if (items.length === 0) {
+                          alert("No items found in image.");
+                        } else {
+                          const newItems = items.map((name) => ({
+                            name: name.charAt(0).toUpperCase() + name.slice(1),
+                            quantity: 1,
+                          }));
+                          setCartItems((prev) => [...prev, ...newItems]);
+                        }
+                        setIsProcessingImage(false);
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = "";
+                        }
+                      };
+                      reader.readAsDataURL(file);
                     } catch (error) {
                       console.error("Error processing image:", error);
                       alert("Error processing image. Please try again.");
-                    } finally {
                       setIsProcessingImage(false);
                       if (fileInputRef.current) {
                         fileInputRef.current.value = "";
@@ -487,9 +541,7 @@ export default function HomePage() {
                     </div>
                   ))
                 )}
-              </div>
-
-              {/* Calculate Button */}
+              </div>              {/* Calculate Button */}
               <button
                 className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 px-6 rounded-xl
                               shadow-lg hover:shadow-emerald-500/30 transition-all duration-500 transform hover:scale-105
@@ -497,6 +549,8 @@ export default function HomePage() {
                               flex items-center justify-center group cursor-pointer"
                 onClick={() => {
                   if (cartItems.length > 0) {
+                    // Save current filters to localStorage before navigation
+                    window.localStorage.setItem("dietaryPreferences", JSON.stringify(filters));
                     window.location.href = "/results";
                   } else {
                     alert("Please add items to your cart first");
