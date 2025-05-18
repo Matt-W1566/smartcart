@@ -12,6 +12,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
+const APP_NAME = "SmartCart";
+
 interface StoreItem {
   name: string;
   price: number;
@@ -72,16 +74,22 @@ const ResultsPage = () => {
     let cart: { [item: string]: number } = {};
     let dietary: { [filter: string]: boolean } = {};
 
-    if (cartRaw) {      try {
-        const parsed = JSON.parse(cartRaw) as { name: string; quantity: number }[];
+    if (cartRaw) {
+      try {
+        const parsed = JSON.parse(cartRaw) as {
+          name: string;
+          quantity: number;
+        }[];
         for (const entry of parsed) {
           if (entry.name && entry.quantity !== undefined) {
             // Ensure quantity is a number and at least 1
-            const numQuantity = typeof entry.quantity === 'number' ? 
-              entry.quantity : 
-              (typeof entry.quantity === 'string' ? 
-                parseInt(entry.quantity) : 1);
-            
+            const numQuantity =
+              typeof entry.quantity === "number"
+                ? entry.quantity
+                : typeof entry.quantity === "string"
+                ? parseInt(entry.quantity)
+                : 1;
+
             cart[entry.name] = Math.max(1, numQuantity);
           }
         }
@@ -100,7 +108,9 @@ const ResultsPage = () => {
     }
 
     if (Object.keys(cart).length === 0) {
-      setError("Your cart is empty. Please add items to your cart and try again.");
+      setError(
+        "Your cart is empty. Please add items to your cart and try again."
+      );
       setLoading(false);
       return;
     }
@@ -113,15 +123,16 @@ const ResultsPage = () => {
       is_halal: dietary.halal || false,
       is_kosher: dietary.kosher || false,
       gluten_free: dietary.glutenFree || false,
-      dairy_free: dietary.dairyFree || false
+      dairy_free: dietary.dairyFree || false,
     };
 
     // Call the optimizer API
     fetch("/api/optimize-cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cart, dietary: dietaryPreferences })
-    })      .then(async (res) => {
+      body: JSON.stringify({ cart, dietary: dietaryPreferences }),
+    })
+      .then(async (res) => {
         if (!res.ok) throw new Error("Failed to optimize cart");
         const data = await res.json();
         console.log("Cart from localStorage:", cart);
@@ -130,49 +141,62 @@ const ResultsPage = () => {
         console.log("Parsed Options:", JSON.stringify(options, null, 2));
         setCartOptions(options);
         if (options.length === 0) {
-          setError("No optimized options could be found for your cart. Try adjusting your items or preferences.");
+          setError(
+            "No optimized options could be found for your cart. Try adjusting your items or preferences."
+          );
         }
         setLoading(false);
       })
       .catch(() => {
-        setError("There was a problem optimizing your cart. Please try again later.");
+        setError(
+          "There was a problem optimizing your cart. Please try again later."
+        );
         setLoading(false);
       });
   }, []);
 
   // Function to capitalize first letter of each word
   const capitalizeWords = (text: string): string => {
-    if (!text) return '';
+    if (!text) return "";
     return text
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };  // Comprehensive function to handle API data parsing
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }; // Comprehensive function to handle API data parsing
   const parseApiResult = (data: any) => {
     // Transform backend result to CartOption[] for UI
     const options: CartOption[] = [];
-    
+
     // Get the cart from localStorage for quantity fallback
     const cartRaw = window.localStorage.getItem("cartItems");
     let cartWithQuantities: { [itemName: string]: number } = {};
-    if (cartRaw) {      try {
-        const parsed = JSON.parse(cartRaw) as { name: string; quantity: number }[];
+    if (cartRaw) {
+      try {
+        const parsed = JSON.parse(cartRaw) as {
+          name: string;
+          quantity: number;
+        }[];
         for (const entry of parsed) {
           // More strict checking for valid entries with quantities
           if (entry.name) {
             // Convert any quantity to a number, default to 1 if invalid
             let numQuantity = 1;
             if (entry.quantity !== undefined) {
-              numQuantity = typeof entry.quantity === 'number' ? 
-                entry.quantity : 
-                (typeof entry.quantity === 'string' ? 
-                  parseInt(entry.quantity, 10) : 1);
-              
+              numQuantity =
+                typeof entry.quantity === "number"
+                  ? entry.quantity
+                  : typeof entry.quantity === "string"
+                  ? parseInt(entry.quantity, 10)
+                  : 1;
+
               if (isNaN(numQuantity)) numQuantity = 1;
             }
-            
+
             // Store quantities by lowercase name for case-insensitive lookup
-            cartWithQuantities[entry.name.toLowerCase()] = Math.max(1, numQuantity);
+            cartWithQuantities[entry.name.toLowerCase()] = Math.max(
+              1,
+              numQuantity
+            );
           }
         }
         console.log("Cart quantities from localStorage:", cartWithQuantities);
@@ -180,55 +204,70 @@ const ResultsPage = () => {
         console.error("Error parsing cart items for quantities:", e);
       }
     }
-    
+
     // Get the highest prices from the highest_single_store
     let highestPriceMap: Record<string, number> = {};
     if (data.highest_single_store && data.highest_single_store.breakdown) {
       const storeKey = Object.keys(data.highest_single_store.breakdown)[0];
       if (storeKey) {
-        const items = (data.highest_single_store.breakdown[storeKey] as { items: any[] }).items;
+        const items = (
+          data.highest_single_store.breakdown[storeKey] as { items: any[] }
+        ).items;
         for (const item of items) {
           highestPriceMap[item.name] = item.price;
         }
       }
-    }    // Map store data to our UI format
+    } // Map store data to our UI format
     const mapStoreData = (storeName: string, breakdown: any) => {
       const typedBreakdown = breakdown as { items: any[]; total: number };
       return {
         storeName: capitalizeWords(storeName),
         location: "",
-        items: typedBreakdown.items.map(item => {          // Get the quantity from multiple potential sources with fallbacks
-          const lowerCaseName = (item.name || '').toLowerCase();
-          const productLowerCaseName = (item.product || '').toLowerCase();
-          
+        items: typedBreakdown.items.map((item) => {
+          // Get the quantity from multiple potential sources with fallbacks
+          const lowerCaseName = (item.name || "").toLowerCase();
+          const productLowerCaseName = (item.product || "").toLowerCase();
+
           // Enhanced quantity extraction with multiple fallbacks
           let quantity = 1; // Default fallback
-          
+
           // First check the API-provided quantity
-          if (typeof item.quantity === 'number' && item.quantity > 0) {
+          if (typeof item.quantity === "number" && item.quantity > 0) {
             quantity = item.quantity;
             console.log(`Using API quantity for ${item.name}: ${quantity}`);
-          } 
+          }
           // Then check cart quantities by item name
-          else if (cartWithQuantities[lowerCaseName] && cartWithQuantities[lowerCaseName] > 0) {
+          else if (
+            cartWithQuantities[lowerCaseName] &&
+            cartWithQuantities[lowerCaseName] > 0
+          ) {
             quantity = cartWithQuantities[lowerCaseName];
-            console.log(`Using cart quantity from item name for ${item.name}: ${quantity}`);
+            console.log(
+              `Using cart quantity from item name for ${item.name}: ${quantity}`
+            );
           }
           // Then check cart quantities by product name
-          else if (cartWithQuantities[productLowerCaseName] && cartWithQuantities[productLowerCaseName] > 0) {
+          else if (
+            cartWithQuantities[productLowerCaseName] &&
+            cartWithQuantities[productLowerCaseName] > 0
+          ) {
             quantity = cartWithQuantities[productLowerCaseName];
-            console.log(`Using cart quantity from product name for ${item.name}: ${quantity}`);
+            console.log(
+              `Using cart quantity from product name for ${item.name}: ${quantity}`
+            );
           }
-          
+
           // Ensure quantity is at least 1
           quantity = Math.max(1, quantity);
-          
-          console.log(`Item ${item.name}: API quantity=${item.quantity}, CartQuantity=${cartWithQuantities[lowerCaseName]}, FinalQuantity=${quantity}`);          
+
+          console.log(
+            `Item ${item.name}: API quantity=${item.quantity}, CartQuantity=${cartWithQuantities[lowerCaseName]}, FinalQuantity=${quantity}`
+          );
           return {
             name: capitalizeWords(item.product || item.name),
-            price: item.subtotal || (item.price * quantity),
-            originalPrice: highestPriceMap[item.name] 
-              ? highestPriceMap[item.name] * quantity 
+            price: item.subtotal || item.price * quantity,
+            originalPrice: highestPriceMap[item.name]
+              ? highestPriceMap[item.name] * quantity
               : item.price * quantity,
             quantity: quantity,
             itemId: item.name, // Store original item name for reference
@@ -236,61 +275,90 @@ const ResultsPage = () => {
         }),
       };
     };
-    
+
     // Add single store option
-    if (data.cheapest_single_store && data.cheapest_single_store.breakdown && 
-        Object.keys(data.cheapest_single_store.breakdown).length > 0) {
+    if (
+      data.cheapest_single_store &&
+      data.cheapest_single_store.breakdown &&
+      Object.keys(data.cheapest_single_store.breakdown).length > 0
+    ) {
       options.push({
         numberOfStores: 1,
-        stores: Object.entries(data.cheapest_single_store.breakdown).map(([storeName, breakdown]) => 
-          mapStoreData(storeName, breakdown)
+        stores: Object.entries(data.cheapest_single_store.breakdown).map(
+          ([storeName, breakdown]) => mapStoreData(storeName, breakdown)
         ),
-        totalOriginal: data.highest_single_store ? data.highest_single_store.total : 
-          (data.cheapest_single_store.breakdown[Object.keys(data.cheapest_single_store.breakdown)[0]] as { total: number }).total,
+        totalOriginal: data.highest_single_store
+          ? data.highest_single_store.total
+          : (
+              data.cheapest_single_store.breakdown[
+                Object.keys(data.cheapest_single_store.breakdown)[0]
+              ] as { total: number }
+            ).total,
         totalOptimized: data.cheapest_single_store.total,
-        totalSavings: data.highest_single_store ? 
-          data.highest_single_store.total - data.cheapest_single_store.total :
-          (data.cheapest_single_store.breakdown[Object.keys(data.cheapest_single_store.breakdown)[0]] as { total: number }).total -
-          data.cheapest_single_store.total,
+        totalSavings: data.highest_single_store
+          ? data.highest_single_store.total - data.cheapest_single_store.total
+          : (
+              data.cheapest_single_store.breakdown[
+                Object.keys(data.cheapest_single_store.breakdown)[0]
+              ] as { total: number }
+            ).total - data.cheapest_single_store.total,
       });
     }
-    
+
     // Add two store option
-    if (data.cheapest_two_stores && data.cheapest_two_stores.breakdown && 
-        Object.keys(data.cheapest_two_stores.breakdown).length > 0) {
+    if (
+      data.cheapest_two_stores &&
+      data.cheapest_two_stores.breakdown &&
+      Object.keys(data.cheapest_two_stores.breakdown).length > 0
+    ) {
       options.push({
         numberOfStores: 2,
-        stores: Object.entries(data.cheapest_two_stores.breakdown).map(([storeName, breakdown]) => 
-          mapStoreData(storeName, breakdown)
+        stores: Object.entries(data.cheapest_two_stores.breakdown).map(
+          ([storeName, breakdown]) => mapStoreData(storeName, breakdown)
         ),
-        totalOriginal: data.highest_single_store ? data.highest_single_store.total : 
-          Object.values(data.cheapest_two_stores.breakdown).reduce((acc: number, b: any) => acc + (b as { total: number }).total, 0),
+        totalOriginal: data.highest_single_store
+          ? data.highest_single_store.total
+          : Object.values(data.cheapest_two_stores.breakdown).reduce(
+              (acc: number, b: any) => acc + (b as { total: number }).total,
+              0
+            ),
         totalOptimized: data.cheapest_two_stores.total,
-        totalSavings: data.highest_single_store ? 
-          data.highest_single_store.total - data.cheapest_two_stores.total :
-          Object.values(data.cheapest_two_stores.breakdown).reduce((acc: number, b: any) => acc + (b as { total: number }).total, 0) -
-          data.cheapest_two_stores.total,
+        totalSavings: data.highest_single_store
+          ? data.highest_single_store.total - data.cheapest_two_stores.total
+          : Object.values(data.cheapest_two_stores.breakdown).reduce(
+              (acc: number, b: any) => acc + (b as { total: number }).total,
+              0
+            ) - data.cheapest_two_stores.total,
       });
     }
-    
+
     // Add three store option
-    if (data.cheapest_three_stores && data.cheapest_three_stores.breakdown && 
-        Object.keys(data.cheapest_three_stores.breakdown).length > 0) {
+    if (
+      data.cheapest_three_stores &&
+      data.cheapest_three_stores.breakdown &&
+      Object.keys(data.cheapest_three_stores.breakdown).length > 0
+    ) {
       options.push({
         numberOfStores: 3,
-        stores: Object.entries(data.cheapest_three_stores.breakdown).map(([storeName, breakdown]) => 
-          mapStoreData(storeName, breakdown)
+        stores: Object.entries(data.cheapest_three_stores.breakdown).map(
+          ([storeName, breakdown]) => mapStoreData(storeName, breakdown)
         ),
-        totalOriginal: data.highest_single_store ? data.highest_single_store.total : 
-          Object.values(data.cheapest_three_stores.breakdown).reduce((acc: number, b: any) => acc + (b as { total: number }).total, 0),
+        totalOriginal: data.highest_single_store
+          ? data.highest_single_store.total
+          : Object.values(data.cheapest_three_stores.breakdown).reduce(
+              (acc: number, b: any) => acc + (b as { total: number }).total,
+              0
+            ),
         totalOptimized: data.cheapest_three_stores.total,
-        totalSavings: data.highest_single_store ? 
-          data.highest_single_store.total - data.cheapest_three_stores.total :
-          Object.values(data.cheapest_three_stores.breakdown).reduce((acc: number, b: any) => acc + (b as { total: number }).total, 0) -
-          data.cheapest_three_stores.total,
+        totalSavings: data.highest_single_store
+          ? data.highest_single_store.total - data.cheapest_three_stores.total
+          : Object.values(data.cheapest_three_stores.breakdown).reduce(
+              (acc: number, b: any) => acc + (b as { total: number }).total,
+              0
+            ) - data.cheapest_three_stores.total,
       });
     }
-    
+
     return options;
   };
 
@@ -306,11 +374,43 @@ const ResultsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
+      {/* Navbar */}
+      <nav className="fixed w-full z-50 transition-all duration-500 ease-in-out bg-white/80 backdrop-blur-md shadow-lg py-2">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link href="/" className="flex-shrink-0">
+              <div className="flex items-center gap-2 group">
+                <img
+                  src="/logo.png"
+                  alt="SmartCart Logo"
+                  className="w-13 h-13 transform group-hover:rotate-[20deg] transition-all duration-500 ease-bounce"
+                />
+                <span className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent">
+                  {APP_NAME}
+                </span>
+              </div>
+            </Link>
+            <div className="hidden md:flex items-center">
+              <Link href="/">
+                <button
+                  className="relative overflow-hidden ml-4 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-2 px-5 rounded-full shadow-lg
+                  hover:shadow-emerald-500/30 transition-all duration-500 cursor-pointer transform hover:scale-105 hover:translate-y-[-2px] group btn-shimmer p-4!"
+                >
+                  <span className="flex items-center relative z-10">
+                    Return Home
+                  </span>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
       {loading ? (
         <LoadingScreen />
       ) : (
         <>
-          {/* Header */}          <div className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-green-900 pt-24 pb-20 px-6">
+          {/* Header */}{" "}
+          <div className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-green-900 pt-[100px]! pb-20 px-6">
             <div className="container mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 animate-fade-in-down">
                 Your Optimized Shopping Cart
@@ -320,45 +420,19 @@ const ResultsPage = () => {
               </p>
               <div className="inline-flex items-center bg-emerald-800/50 rounded-lg px-4 py-2 text-emerald-100 text-sm">
                 <ShoppingBagIcon className="w-4 h-4 mr-2" />
-                <span>{cartOptions.length > 0 && cartOptions[0].stores.reduce((acc, store) => acc + store.items.length, 0)} items in your cart</span>
+                <span>
+                  {cartOptions.length > 0 &&
+                    cartOptions[0].stores.reduce(
+                      (acc, store) => acc + store.items.length,
+                      0
+                    )}{" "}
+                  items in your cart
+                </span>
               </div>
             </div>
-          </div>          {/* Main Content */}
+          </div>{" "}
+          {/* Main Content */}
           <div className="container mx-auto px-6 py-12">
-            {/* Cart Summary */}
-            <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold text-emerald-800 mb-3">Your Cart Summary</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {cartOptions.length > 0 && 
-                  // Create a map of unique items with their quantities
-                  (() => {
-                    const uniqueItems = new Map();
-                    
-                    // Collect all items across all stores
-                    cartOptions[0].stores.forEach(store => {
-                      store.items.forEach(item => {
-                        const key = item.name.toLowerCase();
-                        // If item exists with higher quantity, use that one
-                        if (!uniqueItems.has(key) || uniqueItems.get(key).quantity < item.quantity) {
-                          uniqueItems.set(key, item);
-                        }
-                      });
-                    });
-                    
-                    // Convert to array and render
-                    return Array.from(uniqueItems.values()).map((item, idx) => (
-                      <div key={idx} className="flex items-center justify-between bg-emerald-50 rounded-lg p-3">
-                        <span className="font-medium">{item.name}</span>
-                        <span className="bg-emerald-100 text-emerald-700 rounded-full px-2 py-1 text-xs font-semibold">
-                          {item.quantity} {item.quantity > 1 ? 'units' : 'unit'}
-                        </span>
-                      </div>
-                    ));
-                  })()
-                }
-              </div>
-            </div>
-            
             {/* Results grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {cartOptions.map((option, index) => (
@@ -390,7 +464,8 @@ const ResultsPage = () => {
                       <p className="text-emerald-600 font-semibold mb-4">
                         Save ${option.totalSavings.toFixed(2)}
                       </p>
-                    </div>                    <div className="space-y-4 mb-6">
+                    </div>{" "}
+                    <div className="space-y-4 mb-6">
                       <div className="flex justify-between text-gray-600">
                         <span>Original Total:</span>
                         <span className="line-through">
@@ -402,7 +477,6 @@ const ResultsPage = () => {
                         <span>${option.totalOptimized.toFixed(2)}</span>
                       </div>
                     </div>
-
                     <button
                       onClick={() => setSelectedOption(index)}
                       className={`w-full cursor-pointer mt-4 font-semibold py-3 px-6 rounded-xl
@@ -425,7 +499,9 @@ const ResultsPage = () => {
             {/* Selected Option Details */}
             {selectedOption !== null && selectedOption < cartOptions.length && (
               <div className="mt-12">
-                <div className="bg-white rounded-2xl shadow-xl p-8">                  <h2 className="text-2xl font-bold text-emerald-900 mb-6">
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+                  {" "}
+                  <h2 className="text-2xl font-bold text-emerald-900 mb-6">
                     Your Shopping Plan
                   </h2>
                   {/* Store List */}
@@ -436,7 +512,10 @@ const ResultsPage = () => {
                         <h3 className="text-xl font-semibold text-emerald-900">
                           {store.storeName}
                         </h3>
-                      </div>            <div className="bg-gray-50 rounded-lg p-4">                        {store.items.map((item, itemIndex) => (
+                      </div>{" "}
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        {" "}
+                        {store.items.map((item, itemIndex) => (
                           <div
                             key={itemIndex}
                             className="flex justify-between py-2 border-b border-gray-200 last:border-0"
@@ -473,7 +552,8 @@ const ResultsPage = () => {
                         <div className="flex items-center">
                           <div className="bg-white/80 backdrop-blur-sm p-3 rounded-xl shadow-sm mr-4">
                             <HeartIcon className="w-8 h-8 text-emerald-600 animate-pulse" />
-                          </div>                          <div>
+                          </div>{" "}
+                          <div>
                             <h3 className="text-2xl font-bold text-emerald-900">
                               Make A Difference
                             </h3>
@@ -488,7 +568,8 @@ const ResultsPage = () => {
                           </span>
                         </div>
                       </div>
-                      {/* Description */}                      <p className="text-emerald-800 text-lg mb-8 relative">
+                      {/* Description */}{" "}
+                      <p className="text-emerald-800 text-lg mb-8 relative">
                         Help Fight Food Insecurity By Donating A Portion Of Your
                         Savings To Local Food Banks.
                       </p>
@@ -540,7 +621,8 @@ const ResultsPage = () => {
                           </div>
                         </div>
                       </div>{" "}
-                      {/* Action Button */}                        <button
+                      {/* Action Button */}{" "}
+                      <button
                         onClick={() => setShowDonationModal(true)}
                         className="w-full cursor-pointer mt-4 font-semibold py-3 px-6 rounded-xl
                         transition-all duration-500 flex items-center justify-center group
