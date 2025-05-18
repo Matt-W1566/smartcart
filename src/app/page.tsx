@@ -102,6 +102,8 @@ export default function HomePage() {
   >([]);
   const [showRecipeInput, setShowRecipeInput] = useState(false);
   const [recipeURL, setRecipeURL] = useState("");
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [filters, setFilters] = useState({
     canadian: false,
     vegetarian: false,
@@ -319,19 +321,59 @@ export default function HomePage() {
 
               {/* Upload and Recipe URL buttons */}
               <div className="flex space-x-4 mb-6">
-                <button
-                  className="flex-1 cursor-pointer bg-emerald-100 text-emerald-800 font-medium py-2 px-4 rounded-lg hover:bg-emerald-200 transition-colors flex items-center justify-center"
-                  onClick={() => {
-                    setCartItems([
-                      ...cartItems,
-                      { name: "Tomatoes", quantity: 2 },
-                      { name: "Onions", quantity: 1 },
-                      { name: "Garlic", quantity: 1 },
-                    ]);
+                {" "}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    setIsProcessingImage(true);
+                    try {
+                      const { processImage } = await import(
+                        "@/app/utils/imageProcessing"
+                      );
+                      const items = await processImage(file);
+
+                      // Add each recognized item to the cart
+                      const newItems = items.map((name) => ({
+                        name: name.charAt(0).toUpperCase() + name.slice(1),
+                        quantity: 1,
+                      }));
+
+                      setCartItems((prev) => [...prev, ...newItems]);
+                    } catch (error) {
+                      console.error("Error processing image:", error);
+                      alert("Error processing image. Please try again.");
+                    } finally {
+                      setIsProcessingImage(false);
+                      if (fileInputRef.current) {
+                        fileInputRef.current.value = "";
+                      }
+                    }
                   }}
+                />
+                <button
+                  className={`flex-1 cursor-pointer bg-emerald-100 text-emerald-800 font-medium py-2 px-4 rounded-lg hover:bg-emerald-200 transition-colors flex items-center justify-center ${
+                    isProcessingImage ? "opacity-75 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isProcessingImage}
                 >
-                  <CameraIcon className="w-5 h-5 mr-2" />
-                  Upload a picture
+                  {isProcessingImage ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-emerald-800 mr-2"></div>
+                      Processing...
+                    </div>
+                  ) : (
+                    <>
+                      <CameraIcon className="w-5 h-5 mr-2" />
+                      Upload a picture
+                    </>
+                  )}
                 </button>
                 <button
                   className="flex-1 cursor-pointer bg-emerald-100 text-emerald-800 font-medium py-2 px-4 rounded-lg hover:bg-emerald-200 transition-colors flex items-center justify-center"
@@ -487,7 +529,7 @@ export default function HomePage() {
       <nav
         className={`fixed w-full z-50 transition-all duration-500 ease-in-out ${
           scrollPosition > 50
-            ? "bg-white/95 backdrop-blur-md shadow-lg py-2"
+            ? "bg-white/80 backdrop-blur-md shadow-lg py-2"
             : "bg-transparent py-4"
         }`}
       >
@@ -586,7 +628,7 @@ export default function HomePage() {
           {/* Scroll indicator */}
           <div className="absolute bottom-8 left-1/2 translate-y-5 -translate-x-1/2 animate-fade-in animation-delay-1000">
             <Link
-              href="#features"
+              href="#problem"
               className="group flex flex-col items-center space-y-2 transition-colors duration-300"
               aria-label="Scroll to learn more"
             >
@@ -690,7 +732,7 @@ export default function HomePage() {
                 <div className="relative mb-8">
                   {/* Connection line between steps */}
                   {index < howItWorksSteps.length - 1 && (
-                    <div className="hidden text-xl md:block absolute top-1/3 -right-4 w-8 h-0.5 z-0 text-emerald-700">
+                    <div className="hidden text-3xl md:block absolute top-1/3 -right-4 w-8 h-0.5 z-0 text-white">
                       {"->"}
                     </div>
                   )}

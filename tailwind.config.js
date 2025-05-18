@@ -60,8 +60,16 @@ module.exports = {
           "100%": { transform: "translateY(0%)", opacity: "1" },
         },
         shimmer: {
-          "0%": { backgroundPosition: "-100% 0" },
-          "100%": { backgroundPosition: "100% 0" },
+          "0%": {
+            backgroundImage:
+              "linear-gradient(to right, transparent 0%, #ffffff20 50%, transparent 100%)",
+            backgroundPosition: "-1000px 0",
+          },
+          "100%": {
+            backgroundImage:
+              "linear-gradient(to right, transparent 0%, #ffffff20 50%, transparent 100%)",
+            backgroundPosition: "1000px 0",
+          },
         },
       },
     },
