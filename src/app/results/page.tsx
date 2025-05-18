@@ -462,7 +462,7 @@ const ResultsPage = () => {
                         {option.numberOfStores > 1 ? "s" : ""}
                       </h3>
                       <p className="text-emerald-600 font-semibold mb-4">
-                        Save ${option.totalSavings.toFixed(2)}
+                        Save Up To ${option.totalSavings.toFixed(2)}
                       </p>
                     </div>{" "}
                     <div className="space-y-4 mb-6">

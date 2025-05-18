@@ -57,12 +57,9 @@ class PriceOptimizer {
             let total = 0;
             let valid = true;
             let items: Record<string, string> = {};
-            let breakdown: { name: string, product: string, price: number, quantity: number, subtotal: number }[] = [];
-              for (const itemName of Object.keys(prices)) {
-                const itemStores = prices[itemName];                // Get the actual quantity from the cart, ensuring it's at least 1
+            let breakdown: { name: string, product: string, price: number, quantity: number, subtotal: number }[] = [];              for (const itemName of Object.keys(prices)) {                const itemStores = prices[itemName];                // Get the actual quantity from the cart, ensuring it's at least 1
                 const quantity = cart[itemName] ? Math.max(1, parseInt(String(cart[itemName]))) : 1;
                 console.log(`Processing item ${itemName} with quantity ${quantity} (original: ${cart[itemName]})`);
-                
                 if (itemStores[store]) {
                     let minProduct = '';
                     let minProductPrice = Infinity;
@@ -117,8 +114,8 @@ class PriceOptimizer {
             let usedStores = new Set<string>();
             for (const itemName of Object.keys(prices)) {                let found = false;
                 let minProduct = '';
-                let minProductPrice = Infinity;
-                let minStore = '';                // Ensure we get a valid numeric quantity with a fallback to 1
+                let minProductPrice = Infinity;                console.log(cart, itemName, "HELOOOOO")
+                let minStore = '';                 // Ensure we get a valid numeric quantity with a fallback to 1
                 const quantity = cart[itemName] ? Math.max(1, parseInt(String(cart[itemName]))) : 1;
                 console.log(`N-split item ${itemName} with quantity ${quantity} (original: ${cart[itemName]})`);
                 for (const store of combo) {
@@ -172,10 +169,10 @@ class PriceOptimizer {
             let total = 0;
             let valid = true;
             let items: Record<string, string> = {};
-            let breakdown: { name: string, product: string, price: number, quantity: number, subtotal: number }[] = [];
-            for (const itemName of Object.keys(prices)) {
-                const itemStores = prices[itemName];
+            let breakdown: { name: string, product: string, price: number, quantity: number, subtotal: number }[] = [];            for (const itemName of Object.keys(prices)) {                const itemStores = prices[itemName];
+                // Get the actual quantity from the cart, ensuring it's at least 1
                 const quantity = cart[itemName] ? Math.max(1, parseInt(String(cart[itemName]))) : 1;
+                console.log(`Highest item ${itemName} with quantity ${quantity} (original: ${cart[itemName]})`);
                 if (itemStores[store]) {
                     let maxProduct = '';
                     let maxProductPrice = -Infinity;
@@ -217,6 +214,18 @@ class PriceOptimizer {
         let items = Object.keys(cart).join(', ');
         console.log("Cart items with quantities:", JSON.stringify(cart, null, 2));
         
+        // Ensure all quantities are valid numbers
+        const normalizedCart: { [item: string]: number } = {};
+        for (const [item, quantity] of Object.entries(cart)) {
+            // Handle multiple quantity types
+            const numQuantity = typeof quantity === 'number' ? quantity : 
+                              (typeof quantity === 'string' ? parseInt(quantity, 10) : 1);
+            
+            normalizedCart[item] = Math.max(1, isNaN(numQuantity) ? 1 : numQuantity);
+        }
+        
+        console.log("Normalized cart for price optimizer:", JSON.stringify(normalizedCart, null, 2));
+        
         const pricesData = await this.itemSearch.getPrices(
             items,
             dietary['is_canadian'],
@@ -230,12 +239,11 @@ class PriceOptimizer {
         if (!pricesData) {
             console.error("No prices returned from getPrices.");
             return;
-        }
-        const prices = pricesData as unknown as PricesType;
-        const cheapest1 = this.getCheapestSingleStore(prices, cart);
-        const cheapest2 = this.getCheapestNSplitStores(prices, 2, cart);
-        const cheapest3 = this.getCheapestNSplitStores(prices, 3, cart);
-        const highest = this.getHighestSingleStore(prices, cart);
+        }        const prices = pricesData as unknown as PricesType;
+        const cheapest1 = this.getCheapestSingleStore(prices, normalizedCart);
+        const cheapest2 = this.getCheapestNSplitStores(prices, 2, normalizedCart);
+        const cheapest3 = this.getCheapestNSplitStores(prices, 3, normalizedCart);
+        const highest = this.getHighestSingleStore(prices, normalizedCart);
         const result = {
             cheapest_single_store: cheapest1,
             cheapest_two_stores: cheapest2,

@@ -46,7 +46,8 @@ class ItemSearchAI {
         console.log("Items to search:", list);
         console.log("Dietary filters:", is_canadian, is_vegan, is_vegetarian, is_halal, gluten_free, is_kosher, dairy_free);
         const response = await this.gemini.models.generateContent({
-            model: 'gemini-2.0-flash-lite',
+            //model: 'gemini-2.0-flash-lite',
+            model: 'gemini-2.5-flash-preview-04-17',
             contents: `
             Valid fields for the stores you will return are loblaws, no frills, sobeys, freshco, metro, food basics, walmart, longos(must return each of these stores)
             
